@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChannelMapper">
+  <resultMap id="BaseResultMap" type="com.yxsd.kanshu.product.model.Channel">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="channel" jdbcType="INTEGER" property="channel" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="dnu_ratio" property="dnuRatio" jdbcType="DOUBLE" />
+    <result column="dau_ratio" property="dauRatio" jdbcType="DOUBLE" />
+    <result column="money_ratio" property="moneyRatio" jdbcType="DOUBLE" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+
+  <sql id="Base_Where">
+    <if test="type != null"> and `type` = #{type}</if>
+    <if test="channel != null"> and `channel` = #{channel}</if>
+    <if test="channels != null and channels !=''"><![CDATA[  and channel in (${channels}) ]]></if>
+    <if test="channelName != null and channelName != ''"><![CDATA[ and  channel_name like concat('%', #{channelName}, '%') ]]></if>
+  </sql>
+
+  <sql id="Base_Column_List">
+    id, channel,channel_name,dnu_ratio,dau_ratio,money_ratio,`type`, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from channel
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from channel
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yxsd.kanshu.product.model.Channel">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into channel (channel,channel_name,dnu_ratio,dau_ratio,money_ratio,type,
+      create_date, update_date)
+    values (#{channel,jdbcType=INTEGER}, #{channelName,jdbcType=VARCHAR},
+      #{dnuRatio,jdbcType=DOUBLE}, #{dauRatio,jdbcType=DOUBLE},
+      #{moneyRatio,jdbcType=DOUBLE}, #{type,jdbcType=SMALLINT},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yxsd.kanshu.product.model.Channel">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into channel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="channelName != null">
+        channel_name,
+      </if>
+      <if test="dnuRatio != null">
+        dnu_ratio,
+      </if>
+      <if test="dauRatio != null">
+        dau_ratio,
+      </if>
+      <if test="moneyRatio != null">
+        money_ratio,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="channel != null">
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="channelName != null">
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="dnuRatio != null">
+        #{dnuRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="dauRatio != null">
+        #{dauRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="moneyRatio != null">
+        #{moneyRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yxsd.kanshu.product.model.Channel">
+    update channel
+    <set>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="channelName != null">
+        channel_name = #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="dnuRatio != null">
+        dnu_ratio = #{dnuRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="dauRatio != null">
+        dau_ratio = #{dauRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="moneyRatio != null">
+        money_ratio = #{moneyRatio,jdbcType=DOUBLE},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yxsd.kanshu.product.model.Channel">
+    update channel
+    set channel = #{channel,jdbcType=INTEGER},
+      channel_name = #{channelName,jdbcType=VARCHAR},
+      dnu_ratio = #{dnuRatio,jdbcType=DOUBLE},
+      dau_ratio = #{dauRatio,jdbcType=DOUBLE},
+      money_ratio = #{moneyRatio,jdbcType=DOUBLE},
+      type = #{type,jdbcType=SMALLINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getAll" resultMap="BaseResultMap" parameterType="map">
+    select <include refid="Base_Column_List" />
+    from channel where 1=1
+    <include refid="Base_Where" />
+  </select>
+
+  <select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+    select count(1) from channel where 1=1
+    <include refid="Base_Where" />
+  </select>
+  <select id="pageData" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from channel where 1=1
+    <include refid="Base_Where" />
+    order by create_date desc
+  </select>
+</mapper>

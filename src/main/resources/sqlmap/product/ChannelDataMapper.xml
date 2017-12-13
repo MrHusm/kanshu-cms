@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ChannelDataMapper" >
+  <resultMap id="BaseResultMap" type="com.yxsd.kanshu.product.model.ChannelData" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+    <result column="day" property="day" jdbcType="VARCHAR" />
+    <result column="dnu" property="dnu" jdbcType="INTEGER" />
+    <result column="dnu_fixed" property="dnuFixed" jdbcType="INTEGER" />
+    <result column="dnu_show" property="dnuShow" jdbcType="INTEGER" />
+    <result column="dau" property="dau" jdbcType="INTEGER" />
+    <result column="dau_fixed" property="dauFixed" jdbcType="INTEGER" />
+    <result column="dau_show" property="dauShow" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="INTEGER" />
+    <result column="money_fixed" property="moneyFixed" jdbcType="INTEGER" />
+    <result column="money_show" property="moneyShow" jdbcType="INTEGER" />
+    <result column="one_day_retention" property="oneDayRetention" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Where">
+    <if test="channels != null and channels !=''"><![CDATA[  and channel in (${channels}) ]]></if>
+    <if test="channelsOne != null and channelsOne !=''"><![CDATA[ and channel in (${channelsOne}) ]]></if>
+    <if test="status != null"> and status= #{status}</if>
+    <if test="dayStart != null and dayStart !=''"> <![CDATA[ and  `day` >= '${dayStart}' ]]></if>
+    <if test="dayEnd != null and dayEnd !=''"><![CDATA[ and  `day` <= '${dayEnd}' ]]></if>
+    <if test="day != null and day !=''"> and `day` = #{day}</if>
+    <if test="channel != null"> and `channel` = #{channel}</if>
+  </sql>
+
+  <sql id="Base_Column_List" >
+    id, channel, `day`, dnu, dnu_fixed,dnu_show, dau, dau_fixed, dau_show, money, money_fixed,
+    money_show, one_day_retention, status, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select cd.*,
+    (select c.channel_name from channel c where c.channel = cd.channel) as channel_name
+    from channel_data cd
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from channel_data
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yxsd.kanshu.product.model.ChannelData" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into channel_data (channel, `day`, dnu,
+      dnu_fixed, dnu_show, dau,
+      dau_fixed, dau_show, money,
+      money_fixed,money_show, one_day_retention,
+      status, create_date, update_date
+      )
+    values (#{channel,jdbcType=INTEGER}, #{day,jdbcType=VARCHAR}, #{dnu,jdbcType=INTEGER},
+      #{dnuFixed,jdbcType=INTEGER},#{dnuShow,jdbcType=INTEGER}, #{dau,jdbcType=INTEGER},
+      #{dauFixed,jdbcType=INTEGER},#{dauShow,jdbcType=INTEGER}, #{money,jdbcType=INTEGER},
+      #{moneyFixed,jdbcType=INTEGER},#{moneyShow,jdbcType=INTEGER}, #{oneDayRetention,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yxsd.kanshu.product.model.ChannelData" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into channel_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="dnu != null" >
+        dnu,
+      </if>
+      <if test="dnuFixed != null" >
+        dnu_fixed,
+      </if>
+      <if test="dnuShow != null" >
+        dnu_show,
+      </if>
+      <if test="dau != null" >
+        dau,
+      </if>
+      <if test="dauFixed != null" >
+        dau_fixed,
+      </if>
+      <if test="dauShow != null" >
+        dau_show,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="moneyFixed != null" >
+        money_fixed,
+      </if>
+      <if test="moneyShow != null" >
+        money_show,
+      </if>
+      <if test="oneDayRetention != null" >
+        one_day_retention,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="channel != null" >
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=VARCHAR},
+      </if>
+      <if test="dnu != null" >
+        #{dnu,jdbcType=INTEGER},
+      </if>
+      <if test="dnuFixed != null" >
+        #{dnuFixed,jdbcType=INTEGER},
+      </if>
+      <if test="dnuShow != null" >
+        #{dnuShow,jdbcType=INTEGER},
+      </if>
+      <if test="dau != null" >
+        #{dau,jdbcType=INTEGER},
+      </if>
+      <if test="dauFixed != null" >
+        #{dauFixed,jdbcType=INTEGER},
+      </if>
+      <if test="dauShow != null" >
+        #{dauShow,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=INTEGER},
+      </if>
+      <if test="moneyFixed != null" >
+        #{moneyFixed,jdbcType=INTEGER},
+      </if>
+      <if test="moneyShow != null" >
+        #{moneyShow,jdbcType=INTEGER},
+      </if>
+      <if test="oneDayRetention != null" >
+        #{oneDayRetention,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yxsd.kanshu.product.model.ChannelData" >
+    update channel_data
+    <set >
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=VARCHAR},
+      </if>
+      <if test="dnu != null" >
+        dnu = #{dnu,jdbcType=INTEGER},
+      </if>
+      <if test="dnuFixed != null" >
+        dnu_fixed = #{dnuFixed,jdbcType=INTEGER},
+      </if>
+      <if test="dnuShow != null" >
+        dnu_show = #{dnuShow,jdbcType=INTEGER},
+      </if>
+      <if test="dau != null" >
+        dau = #{dau,jdbcType=INTEGER},
+      </if>
+      <if test="dauFixed != null" >
+        dau_fixed = #{dauFixed,jdbcType=INTEGER},
+      </if>
+      <if test="dauShow != null" >
+        dau_show = #{dauShow,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=INTEGER},
+      </if>
+      <if test="moneyFixed != null" >
+        money_fixed = #{moneyFixed,jdbcType=INTEGER},
+      </if>
+      <if test="moneyShow != null" >
+        money_show = #{moneyShow,jdbcType=INTEGER},
+      </if>
+      <if test="oneDayRetention != null" >
+        one_day_retention = #{oneDayRetention,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yxsd.kanshu.product.model.ChannelData" >
+    update channel_data
+    set channel = #{channel,jdbcType=INTEGER},
+      day = #{day,jdbcType=VARCHAR},
+      dnu = #{dnu,jdbcType=INTEGER},
+      dnu_fixed = #{dnuFixed,jdbcType=INTEGER},
+      dnu_show = #{dnuShow,jdbcType=INTEGER},
+      dau = #{dau,jdbcType=INTEGER},
+      dau_fixed = #{dauFixed,jdbcType=INTEGER},
+      dau_show = #{dauShow,jdbcType=INTEGER},
+      money = #{money,jdbcType=INTEGER},
+      money_fixed = #{moneyFixed,jdbcType=INTEGER},
+      money_show = #{moneyShow,jdbcType=INTEGER},
+      one_day_retention = #{oneDayRetention,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getAll" resultMap="BaseResultMap" parameterType="map">
+    select cd.*,
+    (select c.channel_name from channel c where c.channel = cd.channel) as channel_name
+    from channel_data cd where 1=1
+    <include refid="Base_Where" />
+    <if test="orderColumn != null and orderColumn !=''">
+      order by ${orderColumn}
+    </if>
+    <if test="orderType == 0">
+      asc
+    </if>
+    <if test="orderType == 1">
+      desc
+    </if>
+  </select>
+
+  <select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+    select count(1) from channel_data where 1=1
+    <include refid="Base_Where" />
+  </select>
+  <select id="pageData" resultMap="BaseResultMap" parameterType="map">
+    select cd.*,
+    (select c.channel_name from channel c where c.channel = cd.channel) as channel_name
+    from channel_data cd where 1=1
+    <include refid="Base_Where" />
+    <if test="orderColumn != null and orderColumn !=''">
+      order by ${orderColumn}
+    </if>
+    <if test="orderType == 0">
+      asc
+    </if>
+    <if test="orderType == 1">
+      desc
+    </if>
+  </select>
+</mapper>

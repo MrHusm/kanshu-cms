@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserAccountLogMapper">
+    <resultMap id="BaseResultMap" type="com.yxsd.kanshu.ucenter.model.UserAccountLog">
+        <id column="account_log_id" property="accountLogId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="unit_money" property="unitMoney" jdbcType="INTEGER" />
+        <result column="unit_virtual" property="unitVirtual" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="product_id" property="productId" jdbcType="VARCHAR" />
+        <result column="comment" property="comment" jdbcType="VARCHAR" />
+        <result column="channel" property="channel" jdbcType="INTEGER" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Where">
+        <if test="accountLogId != null"> and account_log_id= #{accountLogId}</if>
+        <if test="userId != null"> and user_id= #{userId}</if>
+        <if test="orderNo != null and orderNo != ''"> and order_no= #{orderNo}</if>
+        <if test="productId != null and productId != ''"> and product_id = #{productId}</if>
+        <if test="type != null"> and `type`= #{type}</if>
+        <if test="channel != null"> and channel= #{channel}</if>
+        <if test="findType != null">
+          <if test="findType == 1">
+              <![CDATA[ and type > 0 ]]>
+          </if>
+          <if test="findType == 2"> and type in(-1,-2,-3)</if>
+          <if test="findType == 3">
+              <![CDATA[ and type < 0  and type not in(-1,-2,-3)]]>
+          </if>
+          <if test="findType == 4">
+              <![CDATA[ and type < 0 ]]>
+          </if>
+        </if>
+    </sql>
+    <sql id="Base_Column_List">
+        account_log_id,user_id ,order_no,unit_money,unit_virtual,`type`,product_id,comment,channel,create_date
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select <include refid="Base_Column_List" />
+        from user_account_log where account_log_id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user_account_log where account_log_id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="accountLogId" parameterType="com.yxsd.kanshu.ucenter.model.UserAccountLog">
+        insert into user_account_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountLogId != null">account_log_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="unitMoney != null">unit_money,</if>
+            <if test="unitVirtual != null">unit_virtual,</if>
+            <if test="type != null">type,</if>
+            <if test="productId != null and productId != ''">product_id,</if>
+            <if test="comment != null and comment !=''">comment,</if>
+            <if test="channel != null">channel,</if>
+            <if test="createDate != null">create_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accountLogId != null">
+                #{accountLogId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null and orderNo != ''">
+                #{orderNo,jdbcType=BIGINT},
+            </if>
+            <if test="unitMoney != null">
+                #{unitMoney,jdbcType=INTEGER},
+            </if>
+            <if test="unitVirtual != null">
+                #{unitVirtual,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="productId != null and productId != ''">
+                #{productId,jdbcType=VARCHAR},
+            </if>
+            <if test="comment != null and comment != ''">
+                #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="channel != null">
+                #{channel,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getAll" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List" />
+        from user_account_log where 1=1
+        <include refid="Base_Where" />
+        order by create_date desc
+    </select>
+    <select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+        select count(1) from user_account_log where 1=1
+        <include refid="Base_Where" />
+    </select>
+    <select id="pageData" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List" />
+        from user_account_log where 1=1
+        <include refid="Base_Where" />
+        order by create_date desc
+    </select>
+
+    <select id="statisChannelMoney" resultType="java.lang.Integer" parameterType="map">
+        SELECT SUM(COMMENT) FROM user_account_log
+        WHERE <![CDATA[ type > 0 ]]>
+        AND channel = #{channel}
+        AND DATE_FORMAT(create_date,'%Y-%m-%d') = #{day}
+    </select>
+</mapper>

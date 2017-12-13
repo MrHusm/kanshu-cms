@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserCmsMapper" >
+  <resultMap id="BaseResultMap" type="com.yxsd.kanshu.ucenter.model.UserCms" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="admin_flag" property="adminFlag" jdbcType="SMALLINT" />
+    <result column="channels" property="channels" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Where">
+    <if test="loginName != null and loginName !=''"> and login_name= #{loginName}</if>
+    <if test="password != null and password !=''"> and password= #{password}</if>
+    <if test="adminFlag != null"> and admin_flag= #{adminFlag}</if>
+    <if test="name != null and name !=''"> <![CDATA[ and  name like concat('%', #{name}, '%') ]]></if>
+    <if test="createDateStart != null and createDateStart !=''"> <![CDATA[ and  create_date >= #{createDateStart} ]]></if>
+    <if test="createDateEnd != null and createDateEnd !=''"><![CDATA[ and  create_date <= #{createDateEnd} ]]></if>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, login_name, password, admin_flag, channels, create_date, update_date
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap" parameterType="map">
+    select <include refid="Base_Column_List" />
+    from user_cms where 1=1
+    <include refid="Base_Where" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_cms
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_cms
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yxsd.kanshu.ucenter.model.UserCms" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user_cms (name, login_name,
+      password, admin_flag, channels,
+      create_date, update_date)
+    values (#{name,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{adminFlag,jdbcType=SMALLINT}, #{channels,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yxsd.kanshu.ucenter.model.UserCms" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user_cms
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="adminFlag != null" >
+        admin_flag,
+      </if>
+      <if test="channels != null" >
+        channels,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="adminFlag != null" >
+        #{adminFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="channels != null" >
+        #{channels,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yxsd.kanshu.ucenter.model.UserCms" >
+    update user_cms
+    <set>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="adminFlag != null" >
+        admin_flag = #{adminFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="channels != null" >
+        channels = #{channels,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yxsd.kanshu.ucenter.model.UserCms" >
+    update user_cms
+    set name = #{name,jdbcType=VARCHAR},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      admin_flag = #{adminFlag,jdbcType=SMALLINT},
+      channels = #{channels,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+    select count(1) from user_cms where 1=1
+    <include refid="Base_Where" />
+  </select>
+  <select id="pageData" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from user_cms where 1=1
+    <include refid="Base_Where" />
+    order by create_date desc
+  </select>
+</mapper>

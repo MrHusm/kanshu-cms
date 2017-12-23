@@ -26,6 +26,6 @@ public class UserAccountLogServiceImpl extends BaseServiceImpl<UserAccountLog, L
 
     @Override
     public Integer statisChannelMoney(Integer channel, String day) {
-        return null;
+        return this.userAccountLogDao.statisChannelMoney(channel,day);
     }
 }

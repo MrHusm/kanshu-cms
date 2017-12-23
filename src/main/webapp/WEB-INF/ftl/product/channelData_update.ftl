@@ -31,7 +31,6 @@
                 <form action="/channelData/update.go" method="post" id="activity_type_list_form" >
                     <input type="hidden" name="id" value="${channelData.id?c}">
                     <input type="hidden" name="channel" value="${channelData.channel?c}">
-                    <input type="hidden" name="dnu" value="${channelData.dnu?c}">
                     <input type="hidden" name="dau" value="${channelData.dau?c}">
                     <input type="hidden" name="money" value="${channelData.money?c}">
                     <input type="hidden" name="status" id="status" value="0">
@@ -50,7 +49,14 @@
                         </tr>
                         <tr>
                             <td style="width:10%; text-align:right">新增用户</td>
-                            <td style="width:23%; text-align:left">${channelData.dnu?c}</td>
+                            <td style="width:23%; text-align:left">
+                                <#if type==3>
+                                    <input type="text" style="width:80%;"  id="dnu" name="dnu" value="<#if channelData.dnu??>${channelData.dnu?c}</#if>">
+                                <#else>
+                                    <input type="hidden" name="dnu" value="${channelData.dnu?c}">
+                                    ${channelData.dnu?c}
+                                </#if>
+                            </td>
                             <td style="width:10%; text-align:right">固定值</td>
                             <td style="width:23%; text-align:left">
                                 <input type="text" style="width:80%;"  id="dnuFix" name="dnuFixed" value="<#if channelData.dnuFixed??>${channelData.dnuFixed?c}</#if>">

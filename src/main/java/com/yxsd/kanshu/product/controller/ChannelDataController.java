@@ -84,12 +84,17 @@ public class ChannelDataController extends BaseController {
     public String toUpdate(HttpServletResponse response,HttpServletRequest request,Model model){
         String id = request.getParameter("id");
         ChannelData channelData = this.channelDataService.findMasterById(Long.parseLong(id));
+        Channel channel = this.channelService.findUniqueByParams("channel",channelData.getChannel());
+        model.addAttribute("type",channel.getType());
         model.addAttribute("channelData",channelData);
         return "/product/channelData_update";
     }
 
     @RequestMapping("update")
     public String update(HttpServletResponse response,HttpServletRequest request,Model model,ChannelData channelData){
+        if(channelData.getDnu() == null){
+            channelData.setDnu(0);
+        }
         channelData.setUpdateDate(new Date());
         Channel channel = this.channelService.findUniqueByParams("channel",channelData.getChannel());
         if(channelData.getDnuFixed() != null && channelData.getDnuFixed() != 0){

@@ -8,6 +8,7 @@ import com.yxsd.kanshu.product.model.Channel;
 import com.yxsd.kanshu.product.model.ChannelData;
 import com.yxsd.kanshu.product.service.IChannelDataService;
 import com.yxsd.kanshu.product.service.IChannelService;
+import com.yxsd.kanshu.ucenter.service.IUserAccessLogService;
 import com.yxsd.kanshu.ucenter.service.IUserAccountLogService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -45,14 +46,18 @@ public class ChannelDataTask extends BaseController {
     @Resource(name="userAccountLogService")
     IUserAccountLogService userAccountLogService;
 
+    @Resource(name="userAccessLogService")
+    IUserAccessLogService userAccessLogService;
+
     /**
-     * 获取渠道数据 每天凌晨1点执行
+     * 获取渠道数据 每天早晨5点执行
      */
     public void runChannelData(){
         logger.info("开始跑渠道数据");
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String day = formatter.format(new Date(currentTime.getTime() - 1 * 24 * 60 * 60 * 1000));
+        //app渠道数据
         String channelsUrl = "http://api.umeng.com/channels?appkey=%s&auth_token=%s&date=yesterday";
         String channelsJson = HttpUtils.getContent(String.format(channelsUrl,APPKEY,AUTH_TOKEN),"UTF-8");
         List<Map> channels =  JSON.parseArray(channelsJson,Map.class);
@@ -95,6 +100,39 @@ public class ChannelDataTask extends BaseController {
                 }
             }
         }
+
+        //H5渠道数据
+        List<Map<String,Object>> list = this.userAccessLogService.statisChannelUv(day);
+        if(CollectionUtils.isNotEmpty(list)){
+            for(Map<String,Object> channelUv : list){
+                Integer uv = Integer.parseInt(channelUv.get("uv").toString());
+                Integer channelId = Integer.parseInt(channelUv.get("channel").toString());
+                Channel channel = this.channelService.findUniqueByParams("channel",channelId,"type",3);
+                if(channel == null){
+                    continue;
+                }
+                ChannelData channelData = this.channelDataService.findUniqueByParams("day",day,"channel",channel.getChannel());
+                if(channelData != null){
+                    continue;
+                }
+                //保存渠道数据
+                channelData = new ChannelData();
+                channelData.setDau(uv);
+                channelData.setDauShow(uv);
+                channelData.setDnu(0);
+                channelData.setDnuShow(0);
+                channelData.setDay(day);
+                channelData.setChannel(channel.getChannel());
+                Integer money = this.userAccountLogService.statisChannelMoney(channel.getChannel(),day);
+                channelData.setMoney(money == null ? 0 : money);
+                channelData.setMoneyShow(channelData.getMoney());
+                channelData.setStatus(0);
+                channelData.setCreateDate(new Date());
+                channelData.setUpdateDate(new Date());
+                this.channelDataService.save(channelData);
+            }
+        }
+
         logger.info("结束跑渠道数据");
     }
 

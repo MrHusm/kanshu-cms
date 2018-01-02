@@ -67,5 +67,33 @@
 		</property>
 	</bean>
 
+	<!-- ###################################################################################-->
 
+	<bean id="doScheduler3"
+		  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref local="checkExpireTime3" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- 时间大小由小到大排列，从秒开始，顺序为 秒，分，时，天，月，年  *为任意 ？为无限制。 -->
+	<bean id="checkExpireTime3" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="checkExpire3" />
+		</property>
+		<property name="cronExpression">
+			<value>0 20 5 * * ?</value>
+		</property>
+	</bean>
+	<bean id="checkExpire3"
+		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="driveBookTask" />
+		</property>
+		<property name="targetMethod">
+			<value>changeDriveBook</value>
+		</property>
+	</bean>
 </beans>

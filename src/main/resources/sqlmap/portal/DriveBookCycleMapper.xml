@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="DriveBookCycleMapper" >
+  <resultMap id="BaseResultMap" type="com.yxsd.kanshu.portal.model.DriveBookCycle" >
+      <id column="id" property="id" jdbcType="BIGINT" />
+      <result column="book_id" property="bookId" jdbcType="BIGINT" />
+      <result column="book_name" property="bookName" jdbcType="VARCHAR" />
+      <result column="type" property="type" jdbcType="INTEGER" />
+      <result column="score" property="score" jdbcType="INTEGER" />
+      <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+      <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+      <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+      <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+    <sql id="Base_Where">
+        <if test="id != null"> and id= #{id}</if>
+        <if test="bookId != null"> and book_id= #{bookId}</if>
+        <if test="type != null"> and type= #{type}</if>
+        <if test="score != null"> and score= #{score}</if>
+        <if test="bookName != null and bookName !=''"> and book_name = #{bookName}</if>
+        <if test="day != null and day !=''"> <![CDATA[ and  start_date <= #{day} and  end_date >= #{day} ]]></if>
+   </sql>
+
+    <sql id="Base_Column_List" >
+        id, book_id, book_name, type, start_date, end_date, score, create_date, update_date
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from drive_book_cycle
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from drive_book_cycle
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.yxsd.kanshu.portal.model.DriveBookCycle" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into drive_book_cycle (book_id, book_name, type,
+        start_date, end_date, score,
+        create_date, update_date)
+        values (#{bookId,jdbcType=BIGINT}, #{bookName,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT},
+        #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{score,jdbcType=INTEGER},
+        #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yxsd.kanshu.portal.model.DriveBookCycle" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into drive_book_cycle
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="bookId != null" >
+                book_id,
+            </if>
+            <if test="bookName != null" >
+                book_name,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="startDate != null" >
+                start_date,
+            </if>
+            <if test="endDate != null" >
+                end_date,
+            </if>
+            <if test="score != null" >
+                score,
+            </if>
+            <if test="createDate != null" >
+                create_date,
+            </if>
+            <if test="updateDate != null" >
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="bookId != null" >
+                #{bookId,jdbcType=BIGINT},
+            </if>
+            <if test="bookName != null" >
+                #{bookName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=SMALLINT},
+            </if>
+            <if test="startDate != null" >
+                #{startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null" >
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="score != null" >
+                #{score,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null" >
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null" >
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yxsd.kanshu.portal.model.DriveBookCycle" >
+        update drive_book_cycle
+        <set >
+            <if test="bookId != null" >
+                book_id = #{bookId,jdbcType=BIGINT},
+            </if>
+            <if test="bookName != null" >
+                book_name = #{bookName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=SMALLINT},
+            </if>
+            <if test="startDate != null" >
+                start_date = #{startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null" >
+                end_date = #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="score != null" >
+                score = #{score,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null" >
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null" >
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yxsd.kanshu.portal.model.DriveBookCycle" >
+        update drive_book_cycle
+        set book_id = #{bookId,jdbcType=BIGINT},
+        book_name = #{bookName,jdbcType=VARCHAR},
+        type = #{type,jdbcType=SMALLINT},
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+        score = #{score,jdbcType=INTEGER},
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+        update_date = #{updateDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="getAll" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List" />
+        from drive_book_cycle where 1=1
+        <include refid="Base_Where" />
+        order by type asc, score desc
+    </select>
+    <select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+        select count(1) from drive_book_cycle where 1=1
+        <include refid="Base_Where" />
+    </select>
+    <select id="pageData" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List" />
+        from  drive_book_cycle where 1=1
+        <include refid="Base_Where" />
+        order by type asc, score desc
+    </select>
+</mapper>

@@ -31,6 +31,11 @@
                             <span>渠道</span>
                             <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
                         </a>
+                        <a href="/driveBookCycle/list.go">
+                            <i class="am-icon-angle-right"></i>
+                            <span>榜单管理</span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </a>
                     </#if>
                     </li>
                 </ul>

@@ -92,6 +92,7 @@ public class ChannelDataTask extends BaseController {
             if(channelDataBefore != null){
                 String retentionsUrl = "http://api.umeng.com/retentions?appkey=%s&auth_token=%s&period_type=daily&start_date=%s&end_date=%s&channels=%s";
                 String retentionsJson = HttpUtils.getContent(String.format(retentionsUrl,APPKEY,AUTH_TOKEN,dayBefore,dayBefore,map.get("id").toString()),"UTF-8");
+                logger.info("retentionsJson:" + retentionsJson);
                 List<Map> retentions =  JSON.parseArray(retentionsJson,Map.class);
                 for(Map retention : retentions){
                     JSONArray retentionRate = (JSONArray)retention.get("retention_rate");

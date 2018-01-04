@@ -60,6 +60,7 @@ public class ChannelDataTask extends BaseController {
         //app渠道数据
         String channelsUrl = "http://api.umeng.com/channels?appkey=%s&auth_token=%s&date=yesterday";
         String channelsJson = HttpUtils.getContent(String.format(channelsUrl,APPKEY,AUTH_TOKEN),"UTF-8");
+        logger.info("channelsJson:"+channelsJson);
         List<Map> channels =  JSON.parseArray(channelsJson,Map.class);
         for(Map map : channels){
             Channel channel = this.channelService.findUniqueByParams("channelName",map.get("channel").toString(),"type",1);

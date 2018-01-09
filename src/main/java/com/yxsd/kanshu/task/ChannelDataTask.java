@@ -50,7 +50,7 @@ public class ChannelDataTask extends BaseController {
     IUserAccessLogService userAccessLogService;
 
     /**
-     * 获取渠道数据 每天早晨5点执行
+     * 获取渠道数据 每天早晨7点执行
      */
     public void runChannelData(){
         logger.info("开始跑渠道数据");
@@ -139,7 +139,7 @@ public class ChannelDataTask extends BaseController {
     }
 
     /**
-     * 发布渠道数据 每天早上11点执行
+     * 发布渠道数据 每天14点执行
      */
     public void publishChannelData(){
         logger.info("开始发布渠道数据");

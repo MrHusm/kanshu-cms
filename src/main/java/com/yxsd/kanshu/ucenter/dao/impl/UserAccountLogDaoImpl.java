@@ -6,6 +6,7 @@ import com.yxsd.kanshu.ucenter.model.UserAccountLog;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,5 +21,10 @@ public class UserAccountLogDaoImpl extends BaseDaoImpl<UserAccountLog> implement
         param.put("channel",channel);
         param.put("day",day);
         return (Integer) this.getSqlSessionQueryTemplate().selectOne("UserAccountLogMapper.statisChannelMoney",param);
+    }
+
+    @Override
+    public List<Map<String, Object>> statisChannelBookMoney(Map<String, Object> condition) {
+        return (List<Map<String, Object>>) this.getSqlSessionQueryTemplate().selectList("UserAccountLogMapper.statisChannelBookMoney",condition);
     }
 }

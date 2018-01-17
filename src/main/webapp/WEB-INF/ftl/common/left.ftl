@@ -20,6 +20,11 @@
                             <span>渠道数据</span>
                             <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
                         </a>
+                        <a href="/bookData/list.go?type=1">
+                            <i class="am-icon-angle-right"></i>
+                            <span>图书数据查询</span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </a>
                     <#if Session.userSessionInfo.adminFlag = 1>
                         <a href="/userCms/list.go">
                             <i class="am-icon-angle-right"></i>

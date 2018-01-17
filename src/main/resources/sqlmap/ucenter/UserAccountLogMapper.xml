@@ -20,6 +20,9 @@
         <if test="productId != null and productId != ''"> and product_id = #{productId}</if>
         <if test="type != null"> and `type`= #{type}</if>
         <if test="channel != null"> and channel= #{channel}</if>
+        <if test="channels != null and channels !=''"><![CDATA[ and channel in (${channels}) ]]></if>
+        <if test="startDate != null and startDate !=''"> <![CDATA[ and  `create_date` >= '${startDate}' ]]></if>
+        <if test="endDate != null and endDate !=''"><![CDATA[ and  `create_date` <= '${endDate}' ]]></if>
         <if test="findType != null">
           <if test="findType == 1">
               <![CDATA[ and type > 0 ]]>
@@ -118,5 +121,19 @@
         WHERE <![CDATA[ type > 0 ]]>
         AND channel = #{channel}
         AND DATE_FORMAT(create_date,'%Y-%m-%d') = #{day}
+    </select>
+
+    <select id="statisChannelBookMoney" resultType="map" parameterType="map">
+        SELECT * FROM (
+        SELECT a.*,(SELECT title FROM book WHERE  book_id=a.product_id) AS title,
+        (SELECT channel_name FROM channel WHERE channel=a.channel) AS channelName
+        FROM
+        (SELECT DATE_FORMAT(create_date,'%Y-%m-%d') AS cal,product_id,
+        channel, SUM(unit_money+unit_virtual) as money
+        FROM user_account_log
+        WHERE <![CDATA[ type < 0 ]]>
+        <include refid="Base_Where" />  GROUP BY product_id,channel,cal ORDER BY cal DESC,money DESC) a) b
+        where 1= 1
+        <if test="title != null and title != ''"> and b.title = #{title}</if>
     </select>
 </mapper>

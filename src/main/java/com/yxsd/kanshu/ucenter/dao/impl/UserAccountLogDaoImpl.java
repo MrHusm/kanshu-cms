@@ -16,11 +16,11 @@ import java.util.Map;
 public class UserAccountLogDaoImpl extends BaseDaoImpl<UserAccountLog> implements IUserAccountLogDao {
 
     @Override
-    public Integer statisChannelMoney(Integer channel, String day) {
+    public Map<String, Object> statisChannelMoney(Integer channel, String day) {
         Map<String,Object> param = new HashMap<String,Object>();
         param.put("channel",channel);
         param.put("day",day);
-        return (Integer) this.getSqlSessionQueryTemplate().selectOne("UserAccountLogMapper.statisChannelMoney",param);
+        return (Map<String, Object>) this.getSqlSessionQueryTemplate().selectOne("UserAccountLogMapper.statisChannelMoney",param);
     }
 
     @Override

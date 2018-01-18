@@ -33,6 +33,7 @@
                     <input type="hidden" name="channel" value="${channelData.channel?c}">
                     <input type="hidden" name="dau" value="${channelData.dau?c}">
                     <input type="hidden" name="money" value="${channelData.money?c}">
+                    <input type="hidden" name="chargeNum" value="<#if channelData.chargeNum??>${channelData.chargeNum?c}</#if>">
                     <input type="hidden" name="status" id="status" value="0">
                     <table class="am-table  table-main">
                         <tr>
@@ -77,6 +78,12 @@
                             <td style="width:23%; text-align:left">
                                 <input type="text" style="width:80%;"  id="moneyFix" name="moneyFixed" value="<#if channelData.moneyFixed??>${channelData.moneyFixed?c}</#if>">
                             </td>
+                        </tr>
+                        <tr>
+                            <td style="width:10%; text-align:right">充值次数</td>
+                            <td style="width:23%; text-align:left"><#if channelData.chargeNum??>${channelData.chargeNum?c}</#if></td>
+                            <td style="width:10%; text-align:right">&nbsp;</td>
+                            <td style="width:23%; text-align:left">&nbsp;</td>
                         </tr>
                         <tr>
                             <td style="width:100%; text-align:center" colspan="4">

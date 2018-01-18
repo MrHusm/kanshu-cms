@@ -116,8 +116,8 @@
         order by create_date desc
     </select>
 
-    <select id="statisChannelMoney" resultType="java.lang.Integer" parameterType="map">
-        SELECT SUM(COMMENT) FROM user_account_log
+    <select id="statisChannelMoney" resultType="map" parameterType="map">
+        SELECT SUM(COMMENT) as money,COUNT(COMMENT) as chargeNum FROM user_account_log
         WHERE <![CDATA[ type > 0 ]]>
         AND channel = #{channel}
         AND DATE_FORMAT(create_date,'%Y-%m-%d') = #{day}

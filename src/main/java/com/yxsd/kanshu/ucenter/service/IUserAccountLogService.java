@@ -17,7 +17,7 @@ public interface IUserAccountLogService extends IBaseService<UserAccountLog,Long
      * @param day
      * @return
      */
-    public Integer statisChannelMoney(Integer channel,String day);
+    public Map<String, Object> statisChannelMoney(Integer channel,String day);
 
     /**
      * 根据条件统计图书收入数据

@@ -132,6 +132,7 @@
                                     <th style="width: 5%" onclick="sortData('money')">收入</th>
                                     <th style="width: 6%">固定值</th>
                                     <th style="width: 5%">渠道显示</th>
+                                    <th style="width: 5%">充值次数</th>
                                     <th style="width: 5%" onclick="sortData('one_day_retention')">次日留存</th>
                                     <th style="width: 8%">状态</th>
                                     <th style="width: 8%">操作</th>
@@ -158,6 +159,7 @@
                                             <td>${channelData.money?c}</td>
                                             <td><#if channelData.moneyFixed??>${channelData.moneyFixed?c}</#if></td>
                                             <td>${channelData.moneyShow?c}</td>
+                                            <td><#if channelData.chargeNum??>${channelData.chargeNum?c}</#if></td>
                                             <td><#if channelData.oneDayRetention??>${channelData.oneDayRetention}</#if></td>
                                             <td>
                                                 <#if channelData.status ==0>

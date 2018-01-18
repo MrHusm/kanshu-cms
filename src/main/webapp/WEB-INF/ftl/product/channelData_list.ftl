@@ -91,6 +91,7 @@
                                     <th style="width: 10%" onclick="sortData('dnu_show')">新增用户</th>
                                     <th style="width: 10%" onclick="sortData('dau_show')">日活用户</th>
                                     <th style="width: 10%" onclick="sortData('money_show')">收入</th>
+                                    <th style="width: 10%">充值次数</th>
                                     <th style="width: 10%" onclick="sortData('one_day_retention')">次日留存</th>
                                 </tr>
                                 </thead>
@@ -104,6 +105,7 @@
                                             <td>${channelData.dnuShow?c}</td>
                                             <td>${channelData.dauShow?c}</td>
                                             <td>${channelData.moneyShow?c}</td>
+                                            <td><#if channelData.chargeNum??>${channelData.chargeNum?c}</#if></td>
                                             <td><#if channelData.oneDayRetention??>${channelData.oneDayRetention}</#if></td>
                                         </tr>
                                     </#list>

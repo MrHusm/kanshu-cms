@@ -59,6 +59,11 @@ public class ChannelData implements Serializable{
     private Integer money;
 
     /**
+     * 充值次数
+     */
+    private Integer chargeNum;
+
+    /**
      * 收入固定值
      */
     private Integer moneyFixed;
@@ -282,5 +287,13 @@ public class ChannelData implements Serializable{
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public Integer getChargeNum() {
+        return chargeNum;
+    }
+
+    public void setChargeNum(Integer chargeNum) {
+        this.chargeNum = chargeNum;
     }
 }

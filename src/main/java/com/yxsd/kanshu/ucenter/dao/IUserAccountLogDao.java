@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface IUserAccountLogDao extends IBaseDao<UserAccountLog> {
 
-    public Integer statisChannelMoney(Integer channel, String day);
+    Map<String, Object> statisChannelMoney(Integer channel, String day);
 
     List<Map<String,Object>> statisChannelBookMoney(Map<String, Object> condition);
 }

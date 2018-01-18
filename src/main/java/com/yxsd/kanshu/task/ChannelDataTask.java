@@ -79,8 +79,17 @@ public class ChannelDataTask extends BaseController {
             channelData.setDnuShow(channelData.getDnu());
             channelData.setDay(day);
             channelData.setChannel(channel.getChannel());
-            Integer money = this.userAccountLogService.statisChannelMoney(channel.getChannel(),day);
-            channelData.setMoney(money == null ? 0 : money);
+            Map<String, Object> moneyMap = this.userAccountLogService.statisChannelMoney(channel.getChannel(),day);
+            if(moneyMap != null && moneyMap.get("money") != null){
+                channelData.setMoney((int)Double.parseDouble(moneyMap.get("money").toString()));
+            }else{
+                channelData.setMoney(0);
+            }
+            if(moneyMap != null && moneyMap.get("chargeNum") != null){
+                channelData.setChargeNum((int)Double.parseDouble(moneyMap.get("chargeNum").toString()));
+            }else{
+                channelData.setChargeNum(0);
+            }
             channelData.setMoneyShow(channelData.getMoney());
             channelData.setStatus(0);
             channelData.setCreateDate(new Date());
@@ -125,8 +134,17 @@ public class ChannelDataTask extends BaseController {
                 channelData.setDnuShow(0);
                 channelData.setDay(day);
                 channelData.setChannel(channel.getChannel());
-                Integer money = this.userAccountLogService.statisChannelMoney(channel.getChannel(),day);
-                channelData.setMoney(money == null ? 0 : money);
+                Map<String, Object> moneyMap = this.userAccountLogService.statisChannelMoney(channel.getChannel(),day);
+                if(moneyMap != null && moneyMap.get("money") != null){
+                    channelData.setMoney((int)Double.parseDouble(moneyMap.get("money").toString()));
+                }else{
+                    channelData.setMoney(0);
+                }
+                if(moneyMap != null && moneyMap.get("chargeNum") != null){
+                    channelData.setChargeNum((int)Double.parseDouble(moneyMap.get("chargeNum").toString()));
+                }else{
+                    channelData.setChargeNum(0);
+                }
                 channelData.setMoneyShow(channelData.getMoney());
                 channelData.setStatus(0);
                 channelData.setCreateDate(new Date());

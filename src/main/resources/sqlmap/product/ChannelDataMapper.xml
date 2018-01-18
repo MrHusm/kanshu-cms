@@ -12,6 +12,7 @@
     <result column="dau" property="dau" jdbcType="INTEGER" />
     <result column="dau_fixed" property="dauFixed" jdbcType="INTEGER" />
     <result column="dau_show" property="dauShow" jdbcType="INTEGER" />
+    <result column="charge_num" property="chargeNum" jdbcType="INTEGER" />
     <result column="money" property="money" jdbcType="INTEGER" />
     <result column="money_fixed" property="moneyFixed" jdbcType="INTEGER" />
     <result column="money_show" property="moneyShow" jdbcType="INTEGER" />
@@ -32,7 +33,7 @@
   </sql>
 
   <sql id="Base_Column_List" >
-    id, channel, `day`, dnu, dnu_fixed,dnu_show, dau, dau_fixed, dau_show, money, money_fixed,
+    id, channel, `day`, dnu, dnu_fixed,dnu_show, dau, dau_fixed, dau_show, charge_num,money, money_fixed,
     money_show, one_day_retention, status, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -51,13 +52,13 @@
     </selectKey>
     insert into channel_data (channel, `day`, dnu,
       dnu_fixed, dnu_show, dau,
-      dau_fixed, dau_show, money,
+      dau_fixed, dau_show,charge_num, money,
       money_fixed,money_show, one_day_retention,
       status, create_date, update_date
       )
     values (#{channel,jdbcType=INTEGER}, #{day,jdbcType=VARCHAR}, #{dnu,jdbcType=INTEGER},
       #{dnuFixed,jdbcType=INTEGER},#{dnuShow,jdbcType=INTEGER}, #{dau,jdbcType=INTEGER},
-      #{dauFixed,jdbcType=INTEGER},#{dauShow,jdbcType=INTEGER}, #{money,jdbcType=INTEGER},
+      #{dauFixed,jdbcType=INTEGER},#{dauShow,jdbcType=INTEGER}, #{chargeNum,jdbcType=INTEGER},#{money,jdbcType=INTEGER},
       #{moneyFixed,jdbcType=INTEGER},#{moneyShow,jdbcType=INTEGER}, #{oneDayRetention,jdbcType=VARCHAR},
       #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
@@ -91,6 +92,9 @@
       </if>
       <if test="dauShow != null" >
         dau_show,
+      </if>
+      <if test="chargeNum != null" >
+        charge_num,
       </if>
       <if test="money != null" >
         money,
@@ -138,6 +142,9 @@
       </if>
       <if test="dauShow != null" >
         #{dauShow,jdbcType=INTEGER},
+      </if>
+      <if test="chargeNum != null" >
+        #{chargeNum,jdbcType=INTEGER},
       </if>
       <if test="money != null" >
         #{money,jdbcType=INTEGER},
@@ -189,6 +196,9 @@
       <if test="dauShow != null" >
         dau_show = #{dauShow,jdbcType=INTEGER},
       </if>
+      <if test="chargeNum != null" >
+        charge_num = #{chargeNum,jdbcType=INTEGER},
+      </if>
       <if test="money != null" >
         money = #{money,jdbcType=INTEGER},
       </if>
@@ -223,6 +233,7 @@
       dau = #{dau,jdbcType=INTEGER},
       dau_fixed = #{dauFixed,jdbcType=INTEGER},
       dau_show = #{dauShow,jdbcType=INTEGER},
+      charge_num = #{chargeNum,jdbcType=INTEGER},
       money = #{money,jdbcType=INTEGER},
       money_fixed = #{moneyFixed,jdbcType=INTEGER},
       money_show = #{moneyShow,jdbcType=INTEGER},

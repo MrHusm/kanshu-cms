@@ -55,6 +55,8 @@ public class ChannelDataController extends BaseController {
         if(StringUtils.isNotBlank(page)){
             query.setPage(Integer.parseInt(page));
         }else{
+            condition.setOrderColumn("day");
+            condition.setOrderType(1);
             query.setPage(1);
         }
         query.setPageSize(10);

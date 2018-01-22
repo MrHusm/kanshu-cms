@@ -57,6 +57,32 @@
             window.location.href=url;
         }
 
+        function checkAll(param){
+            if($(param).is(':checked')){
+                $("input[name='check']").prop("checked", true);
+            }else{
+                $("input[name='check']").prop("checked", false);
+            }
+        }
+
+        function delsureBatch(){
+            if(confirm("确认批量删除?")){
+                var ids = "";
+                var deleteFlag = false;
+                $("input[name='check']").each(function(){
+                    if($(this).is(':checked')){
+                        ids += $(this).val()+",";
+                        deleteFlag = true;
+                    }
+                });
+                if(deleteFlag){
+                    window.location.href="/driveBookCycle/batchDelete.go?ids="+ids;
+                }else{
+                    alert("请勾选需要删除的图书");
+                }
+            }
+        }
+
     </script>
 </head>
 <body data-type="generalComponents">
@@ -90,6 +116,7 @@
                         </tr>
                         <tr>
                             <td style="width:100%; text-align:center" colspan="4">
+                                <input type="button" onclick="delsureBatch()" value="批量删除">&nbsp;&nbsp;&nbsp;
                                 <input type="button" onclick="toAdd()" value="添加">&nbsp;&nbsp;&nbsp;
                                 <input type="button" onclick="search()" value="查询">
                             </td>
@@ -103,12 +130,13 @@
                             <table class="am-table am-table-striped am-table-hover table-main">
                                 <thead>
                                 <tr>
+                                    <th style="width: 5%"><input type="checkbox" class="tpl-table-fz-check" onclick="checkAll(this)"></th>
                                     <th style="width: 10%">图书ID</th>
                                     <th style="width: 25%">书名</th>
                                     <th style="width: 10%">类型</th>
                                     <th style="width: 10%">开始时间</th>
                                     <th style="width: 10%">结束时间</th>
-                                    <th style="width: 20%">排序</th>
+                                    <th style="width: 10%">排序</th>
                                     <th style="width: 16%">操作</th>
                                 </tr>
                                 </thead>
@@ -116,6 +144,7 @@
                                 <#if pageFinder?? && pageFinder.data??>
                                     <#list pageFinder.data as driveBookCycle>
                                         <tr>
+                                            <td><input type="checkbox" name="check" id="check" value="${driveBookCycle.id?c}"></td>
                                             <td>${driveBookCycle.bookId?c}</td>
                                             <td>${driveBookCycle.bookName}</td>
                                             <td>

@@ -46,7 +46,7 @@ public class DriveBookCycleController extends BaseController {
         }else{
             query.setPage(1);
         }
-        query.setPageSize(10);
+        query.setPageSize(50);
 
         PageFinder<DriveBookCycle> pageFinder = driveBookCycleService.findPageFinderObjs(condition,query);
         if(pageFinder!=null){
@@ -75,6 +75,17 @@ public class DriveBookCycleController extends BaseController {
     public String delete(HttpServletResponse response,HttpServletRequest request,Model model){
         String id = request.getParameter("id");
         this.driveBookCycleService.deleteById(Long.parseLong(id));
+        return "redirect:/driveBookCycle/list.go";
+    }
+
+    @RequestMapping("batchDelete")
+    public String batchDelete(HttpServletResponse response,HttpServletRequest request,Model model){
+        String ids = request.getParameter("ids");
+        for(String id : ids.split(",")){
+            if(StringUtils.isNotBlank(id)){
+                this.driveBookCycleService.deleteById(Long.parseLong(id));
+            }
+        }
         return "redirect:/driveBookCycle/list.go";
     }
 

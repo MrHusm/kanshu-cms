@@ -58,7 +58,7 @@ public class ChannelDataTask extends BaseController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String day = formatter.format(new Date(currentTime.getTime() - 1 * 24 * 60 * 60 * 1000));
         //app渠道数据
-        String channelsUrl = "http://api.umeng.com/channels?appkey=%s&auth_token=%s&date=yesterday";
+        String channelsUrl = "http://api.umeng.com/channels?appkey=%s&auth_token=%s&date=yesterday&page=1&per_page=200";
         String channelsJson = HttpUtils.getContent(String.format(channelsUrl,APPKEY,AUTH_TOKEN),"UTF-8");
         logger.info("channelsJson:"+channelsJson);
         List<Map> channels =  JSON.parseArray(channelsJson,Map.class);

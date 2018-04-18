@@ -35,6 +35,8 @@ public class ChannelDataTask extends BaseController {
 
     public static final String APPKEY = "59e45e1d75ca3568d8000036";
 
+    public static final String APPKEY_KXSSQ = "5ac075baf43e484ac700003f";
+
     public static final String AUTH_TOKEN = "58lOeVDCVPR52xExU32U";
 
     @Resource(name="channelService")
@@ -58,56 +60,59 @@ public class ChannelDataTask extends BaseController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String day = formatter.format(new Date(currentTime.getTime() - 1 * 24 * 60 * 60 * 1000));
         //app渠道数据
-        String channelsUrl = "http://api.umeng.com/channels?appkey=%s&auth_token=%s&date=yesterday&page=1&per_page=200";
-        String channelsJson = HttpUtils.getContent(String.format(channelsUrl,APPKEY,AUTH_TOKEN),"UTF-8");
-        logger.info("channelsJson:"+channelsJson);
-        List<Map> channels =  JSON.parseArray(channelsJson,Map.class);
-        for(Map map : channels){
-            Channel channel = this.channelService.findUniqueByParams("channelName",map.get("channel").toString(),"type",1);
-            if(channel == null){
-                continue;
-            }
-            ChannelData channelData = this.channelDataService.findUniqueByParams("day",day,"channel",channel.getChannel());
-            if(channelData != null){
-                continue;
-            }
-            //保存渠道数据
-            channelData = new ChannelData();
-            channelData.setDau(Integer.parseInt(map.get("active_user").toString()));
-            channelData.setDauShow(channelData.getDau());
-            channelData.setDnu(Integer.parseInt(map.get("install").toString()));
-            channelData.setDnuShow(channelData.getDnu());
-            channelData.setDay(day);
-            channelData.setChannel(channel.getChannel());
-            Map<String, Object> moneyMap = this.userAccountLogService.statisChannelMoney(channel.getChannel(),day);
-            if(moneyMap != null && moneyMap.get("money") != null){
-                channelData.setMoney((int)Double.parseDouble(moneyMap.get("money").toString()));
-            }else{
-                channelData.setMoney(0);
-            }
-            if(moneyMap != null && moneyMap.get("chargeNum") != null){
-                channelData.setChargeNum((int)Double.parseDouble(moneyMap.get("chargeNum").toString()));
-            }else{
-                channelData.setChargeNum(0);
-            }
-            channelData.setMoneyShow(channelData.getMoney());
-            channelData.setStatus(0);
-            channelData.setCreateDate(new Date());
-            channelData.setUpdateDate(new Date());
-            this.channelDataService.save(channelData);
+        String[] appKeys = {APPKEY,APPKEY_KXSSQ};
+        for(String appKey : appKeys){
+            String channelsUrl = "http://api.umeng.com/channels?appkey=%s&auth_token=%s&date=yesterday&page=1&per_page=200";
+            String channelsJson = HttpUtils.getContent(String.format(channelsUrl,appKey,AUTH_TOKEN),"UTF-8");
+            logger.info("channelsJson:"+channelsJson);
+            List<Map> channels =  JSON.parseArray(channelsJson,Map.class);
+            for(Map map : channels){
+                Channel channel = this.channelService.findUniqueByParams("channelName",map.get("channel").toString(),"type",1);
+                if(channel == null){
+                    continue;
+                }
+                ChannelData channelData = this.channelDataService.findUniqueByParams("day",day,"channel",channel.getChannel());
+                if(channelData != null){
+                    continue;
+                }
+                //保存渠道数据
+                channelData = new ChannelData();
+                channelData.setDau(Integer.parseInt(map.get("active_user").toString()));
+                channelData.setDauShow(channelData.getDau());
+                channelData.setDnu(Integer.parseInt(map.get("install").toString()));
+                channelData.setDnuShow(channelData.getDnu());
+                channelData.setDay(day);
+                channelData.setChannel(channel.getChannel());
+                Map<String, Object> moneyMap = this.userAccountLogService.statisChannelMoney(channel.getChannel(),day);
+                if(moneyMap != null && moneyMap.get("money") != null){
+                    channelData.setMoney((int)Double.parseDouble(moneyMap.get("money").toString()));
+                }else{
+                    channelData.setMoney(0);
+                }
+                if(moneyMap != null && moneyMap.get("chargeNum") != null){
+                    channelData.setChargeNum((int)Double.parseDouble(moneyMap.get("chargeNum").toString()));
+                }else{
+                    channelData.setChargeNum(0);
+                }
+                channelData.setMoneyShow(channelData.getMoney());
+                channelData.setStatus(0);
+                channelData.setCreateDate(new Date());
+                channelData.setUpdateDate(new Date());
+                this.channelDataService.save(channelData);
 
-            //保存前天次日留存数据
-            String dayBefore = formatter.format(new Date(currentTime.getTime() - 2 * 24 * 60 * 60 * 1000));
-            ChannelData channelDataBefore = this.channelDataService.findUniqueByParams("day",dayBefore,"channel",channel.getChannel());
-            if(channelDataBefore != null){
-                String retentionsUrl = "http://api.umeng.com/retentions?appkey=%s&auth_token=%s&period_type=daily&start_date=%s&end_date=%s&channels=%s";
-                String retentionsJson = HttpUtils.getContent(String.format(retentionsUrl,APPKEY,AUTH_TOKEN,dayBefore,dayBefore,map.get("id").toString()),"UTF-8");
-                logger.info("retentionsJson:" + retentionsJson);
-                List<Map> retentions =  JSON.parseArray(retentionsJson,Map.class);
-                for(Map retention : retentions){
-                    JSONArray retentionRate = (JSONArray)retention.get("retention_rate");
-                    channelDataBefore.setOneDayRetention(retentionRate.get(0).toString() + "%");
-                    channelDataService.update(channelDataBefore);
+                //保存前天次日留存数据
+                String dayBefore = formatter.format(new Date(currentTime.getTime() - 2 * 24 * 60 * 60 * 1000));
+                ChannelData channelDataBefore = this.channelDataService.findUniqueByParams("day",dayBefore,"channel",channel.getChannel());
+                if(channelDataBefore != null){
+                    String retentionsUrl = "http://api.umeng.com/retentions?appkey=%s&auth_token=%s&period_type=daily&start_date=%s&end_date=%s&channels=%s";
+                    String retentionsJson = HttpUtils.getContent(String.format(retentionsUrl,appKey,AUTH_TOKEN,dayBefore,dayBefore,map.get("id").toString()),"UTF-8");
+                    logger.info("retentionsJson:" + retentionsJson);
+                    List<Map> retentions =  JSON.parseArray(retentionsJson,Map.class);
+                    for(Map retention : retentions){
+                        JSONArray retentionRate = (JSONArray)retention.get("retention_rate");
+                        channelDataBefore.setOneDayRetention(retentionRate.get(0).toString() + "%");
+                        channelDataService.update(channelDataBefore);
+                    }
                 }
             }
         }

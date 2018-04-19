@@ -17,7 +17,8 @@
     <if test="type != null"> and `type` = #{type}</if>
     <if test="channel != null"> and `channel` = #{channel}</if>
     <if test="channels != null and channels !=''"><![CDATA[  and channel in (${channels}) ]]></if>
-    <if test="channelName != null and channelName != ''"><![CDATA[ and  channel_name like concat('%', #{channelName}, '%') ]]></if>
+    <!--<if test="channelName != null and channelName != ''"><![CDATA[ and  channel_name like concat('%', #{channelName}, '%') ]]></if>-->
+    <if test="channelName != null and channelName != ''"> and channel_name = #{channelName}</if>
   </sql>
 
   <sql id="Base_Column_List">

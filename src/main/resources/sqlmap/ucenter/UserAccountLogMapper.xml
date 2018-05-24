@@ -19,6 +19,7 @@
         <if test="orderNo != null and orderNo != ''"> and order_no= #{orderNo}</if>
         <if test="productId != null and productId != ''"> and product_id = #{productId}</if>
         <if test="type != null"> and `type`= #{type}</if>
+        <if test="types != null and types !=''"><![CDATA[ and type in (${types}) ]]></if>
         <if test="channel != null"> and channel= #{channel}</if>
         <if test="channels != null and channels !=''"><![CDATA[ and channel in (${channels}) ]]></if>
         <if test="startDate != null and startDate !=''"> <![CDATA[ and  `create_date` >= '${startDate}' ]]></if>

@@ -25,6 +25,13 @@
                             <span>图书数据查询</span>
                             <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
                         </a>
+                    <#if Session.userSessionInfo.adminFlag = 1 || Session.userSessionInfo.channels?index_of("100040")!=-1>
+                        <a href="/user/list.go">
+                            <i class="am-icon-angle-right"></i>
+                            <span>充值明细数据</span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </a>
+                    </#if>
                     <#if Session.userSessionInfo.adminFlag = 1>
                         <a href="/userCms/list.go">
                             <i class="am-icon-angle-right"></i>

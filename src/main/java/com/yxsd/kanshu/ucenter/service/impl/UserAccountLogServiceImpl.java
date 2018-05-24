@@ -35,4 +35,5 @@ public class UserAccountLogServiceImpl extends BaseServiceImpl<UserAccountLog, L
     public List<Map<String, Object>> statisChannelBookMoney(Map<String, Object> condition) {
         return this.userAccountLogDao.statisChannelBookMoney(condition);
     }
+
 }

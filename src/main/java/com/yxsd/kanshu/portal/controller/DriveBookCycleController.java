@@ -114,6 +114,9 @@ public class DriveBookCycleController extends BaseController {
                 bookCycle.setStartDate(sdf.parse(startDate));
                 bookCycle.setEndDate(sdf.parse(endDate));
                 bookCycle.setType(driveBookCycle.getType());
+                if(driveBookCycle.getType() == 11){
+                    bookCycle.setNum(driveBookCycle.getNum());
+                }
                 bookCycle.setCreateDate(new Date());
                 bookCycle.setUpdateDate(new Date());
                 this.driveBookCycleService.save(bookCycle);

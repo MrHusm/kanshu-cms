@@ -7,6 +7,7 @@
       <result column="book_name" property="bookName" jdbcType="VARCHAR" />
       <result column="type" property="type" jdbcType="INTEGER" />
       <result column="score" property="score" jdbcType="INTEGER" />
+      <result column="num" property="num" jdbcType="INTEGER" />
       <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
       <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
       <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
@@ -22,7 +23,7 @@
    </sql>
 
     <sql id="Base_Column_List" >
-        id, book_id, book_name, type, start_date, end_date, score, create_date, update_date
+        id, book_id, book_name, type, start_date, end_date, score, num,create_date, update_date
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select
@@ -39,10 +40,10 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into drive_book_cycle (book_id, book_name, type,
-        start_date, end_date, score,
+        start_date, end_date, score,num,
         create_date, update_date)
         values (#{bookId,jdbcType=BIGINT}, #{bookName,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT},
-        #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{score,jdbcType=INTEGER},
+        #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{score,jdbcType=INTEGER},#{num,jdbcType=INTEGER},
         #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
     </insert>
     <insert id="insertSelective" parameterType="com.yxsd.kanshu.portal.model.DriveBookCycle" >
@@ -69,6 +70,9 @@
             <if test="score != null" >
                 score,
             </if>
+            <if test="num != null" >
+                num,
+            </if>
             <if test="createDate != null" >
                 create_date,
             </if>
@@ -94,6 +98,9 @@
             </if>
             <if test="score != null" >
                 #{score,jdbcType=INTEGER},
+            </if>
+            <if test="num != null" >
+                #{num,jdbcType=INTEGER},
             </if>
             <if test="createDate != null" >
                 #{createDate,jdbcType=TIMESTAMP},
@@ -124,6 +131,9 @@
             <if test="score != null" >
                 score = #{score,jdbcType=INTEGER},
             </if>
+            <if test="num != null" >
+                num = #{num,jdbcType=INTEGER},
+            </if>
             <if test="createDate != null" >
                 create_date = #{createDate,jdbcType=TIMESTAMP},
             </if>
@@ -141,6 +151,7 @@
         start_date = #{startDate,jdbcType=TIMESTAMP},
         end_date = #{endDate,jdbcType=TIMESTAMP},
         score = #{score,jdbcType=INTEGER},
+        num = #{num,jdbcType=INTEGER},
         create_date = #{createDate,jdbcType=TIMESTAMP},
         update_date = #{updateDate,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}

@@ -74,7 +74,8 @@
                                     <option value="6" <#if driveBookCycle.type?? && driveBookCycle.type = 6>selected</#if>>全站畅销</option>
                                     <option value="7" <#if driveBookCycle.type?? && driveBookCycle.type = 7>selected</#if>>完结精选</option>
                                     <option value="8" <#if driveBookCycle.type?? && driveBookCycle.type = 8>selected</#if>>重磅新书</option>
-                                    <option value="9" <#if driveBookCycle.type?? && driveBookCycle.type = 9>selected</#if>>免费</option>
+                                    <option value="9" <#if driveBookCycle.type?? && driveBookCycle.type = 9>selected</#if>>全本免费</option>
+                                    <option value="11" <#if driveBookCycle.type?? && driveBookCycle.type = 11>selected</#if>>限章免费</option>
                                 </select>
                             </td>
                         </tr>

@@ -108,7 +108,8 @@
                                     <option value="6" <#if condition.type?? && condition.type = 6>selected</#if>>全站畅销</option>
                                     <option value="7" <#if condition.type?? && condition.type = 7>selected</#if>>完结精选</option>
                                     <option value="8" <#if condition.type?? && condition.type = 8>selected</#if>>重磅新书</option>
-                                    <option value="9" <#if condition.type?? && condition.type = 9>selected</#if>>免费</option>
+                                    <option value="9" <#if condition.type?? && condition.type = 9>selected</#if>>全本免费</option>
+                                    <option value="11" <#if condition.type?? && condition.type = 11>selected</#if>>限章免费</option>
                                 </select>
                             </td>
                             <td style="width:15%; text-align:right">书名</td>
@@ -137,6 +138,7 @@
                                     <th style="width: 10%">开始时间</th>
                                     <th style="width: 10%">结束时间</th>
                                     <th style="width: 10%">排序</th>
+                                    <th style="width: 10%">免费章节数</th>
                                     <th style="width: 16%">操作</th>
                                 </tr>
                                 </thead>
@@ -165,16 +167,19 @@
                                                 <#elseif driveBookCycle.type == 8>
                                                     重磅新书
                                                 <#elseif driveBookCycle.type == 9>
-                                                    免费
+                                                    全本免费
+                                                <#elseif driveBookCycle.type == 11>
+                                                    限章免费
                                                 </#if>
                                             </td>
                                             <td><#if driveBookCycle.startDate??>${driveBookCycle.startDate?string("yyyy-MM-dd")}</#if></td>
                                             <td><#if driveBookCycle.endDate??>${driveBookCycle.endDate?string("yyyy-MM-dd")}</#if></td>
                                             <td onclick="toUpdateIdx('${driveBookCycle.id?c}')">
-                                                <span id="txt_${driveBookCycle.id }">${driveBookCycle.score }</span>
-                                                <input type="text" id="idx_${driveBookCycle.id }" name="score" value="${driveBookCycle.score }" style="display:none;width:30%"/>
-                                                <input type="button" id="btn_${driveBookCycle.id }" name="bt" style="display:none" value="修改" onclick="updateIdx('${driveBookCycle.id}')">
+                                                <span id="txt_${driveBookCycle.id?c }">${driveBookCycle.score }</span>
+                                                <input type="text" id="idx_${driveBookCycle.id?c }" name="score" value="${driveBookCycle.score }" style="display:none;width:30%"/>
+                                                <input type="button" id="btn_${driveBookCycle.id?c }" name="bt" style="display:none" value="修改" onclick="updateIdx('${driveBookCycle.id?c}')">
                                             </td>
+                                            <td><#if driveBookCycle.num??>${driveBookCycle.num}</#if></td>
                                             <td>
                                                 <div class="am-btn-toolbar">
                                                     <div class="am-btn-group am-btn-group-xs">

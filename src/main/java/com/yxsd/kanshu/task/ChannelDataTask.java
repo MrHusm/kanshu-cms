@@ -182,7 +182,7 @@ public class ChannelDataTask extends BaseController {
                     channelData.setDauShow((int)(channelData.getDau() * channel.getDauRatio()));
                 }
                 if(channelData.getMoneyFixed() != null && channelData.getMoneyFixed() != 0){
-                    channelData.setMoneyFixed(channelData.getMoneyFixed());
+                    channelData.setMoneyShow(channelData.getMoneyFixed());
                 }else if(channel.getMoneyRatio() != null && channel.getMoneyRatio() != 0){
                     channelData.setMoneyShow((int)(channelData.getMoney() * channel.getMoneyRatio()));
                 }

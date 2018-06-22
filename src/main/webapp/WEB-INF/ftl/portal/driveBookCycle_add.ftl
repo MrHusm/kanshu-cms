@@ -44,6 +44,14 @@
                 return false;
             }
         }
+
+        function showNum(){
+            if($("#type").val() == 11){
+                $("#numTr").show();
+            }else{
+                $("#numTr").hide();
+            }
+        }
     </script>
 </head>
 <body data-type="generalComponents">
@@ -64,7 +72,7 @@
                         <tr>
                             <td style="width:25%; text-align:right">榜单类型</td>
                             <td style="width:75%; text-align:left">
-                                <select name="type" id="type" style="width: 50%">
+                                <select name="type" id="type" onchange="showNum()" style="width: 50%">
                                     <option value="">请选择</option>
                                     <option value="1">首页驱动</option>
                                     <option value="2">男生最爱</option>
@@ -74,16 +82,23 @@
                                     <option value="6">全站畅销</option>
                                     <option value="7">完结精选</option>
                                     <option value="8">重磅新书</option>
-                                    <option value="9">免费</option>
+                                    <option value="9">全本免费</option>
+                                    <option value="11">限章免费</option>
                                 </select>
+                            </td>
+                        </tr>
+                        <tr style="display: none;" id="numTr">
+                            <td style="width:25%; text-align:right">图书限免章节数</td>
+                            <td style="width:75%; text-align:left">
+                                <input type="text" name="num">
                             </td>
                         </tr>
                         <tr>
                             <td style="width:25%;text-align:right">轮播时间</td>
                             <td style="width:75%;text-align:left">
-                                <input type="text" style="width: 150px;" type="text" name="startDateStr" value="" class="Wdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDateStr\')}'})" id="startDateStr" >
+                                <input type="text" style="width: 150px;" name="startDateStr" value="" class="Wdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDateStr\')}'})" id="startDateStr" >
                                 到
-                                <input type="text" style="width: 150px;" type="text" name="endDateStr" class="Wdate" value="" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDateStr\')}'})" id="endDateStr">
+                                <input type="text" style="width: 150px;" name="endDateStr" class="Wdate" value="" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDateStr\')}'})" id="endDateStr">
                             </td>
                         </tr>
                         <tr>

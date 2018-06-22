@@ -6,6 +6,8 @@ import com.yxsd.kanshu.portal.model.DriveBook;
 import com.yxsd.kanshu.portal.model.DriveBookCycle;
 import com.yxsd.kanshu.portal.service.IDriveBookCycleService;
 import com.yxsd.kanshu.portal.service.IDriveBookService;
+import com.yxsd.kanshu.product.model.BookExpand;
+import com.yxsd.kanshu.product.service.IBookExpandService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,9 @@ public class DriveBookTask extends BaseController {
     @Resource(name="driveBookCycleService")
     IDriveBookCycleService driveBookCycleService;
 
+    @Resource(name="bookExpandService")
+    IBookExpandService bookExpandService;
+
     /**
      * 更换榜单图书 每天早晨5:20执行
      */
@@ -48,7 +53,7 @@ public class DriveBookTask extends BaseController {
         Map<String,Object> condition = new HashMap<String,Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date day = new Date();
-        for(int i = 1; i < 10; i++){
+        for(int i = 1; i < 12; i++){
             condition.clear();
             condition.put("type",i);
             condition.put("day",sdf.format(day));
@@ -74,6 +79,7 @@ public class DriveBookTask extends BaseController {
                         driveBook.setScore(driveBookCycle.getScore());
                         driveBook.setType(i);
                         driveBook.setBookId(driveBookCycle.getBookId());
+                        driveBook.setNum(driveBookCycle.getNum());
                         driveBook.setCreateDate(new Date());
                         driveBook.setUpdateDate(new Date());
                         this.driveBookService.save(driveBook);
@@ -89,6 +95,19 @@ public class DriveBookTask extends BaseController {
                 masterRedisTemplate.delete(key);
             }
         }
+        //根据图书点击量更改免费图书的排序
+        List<DriveBook> driveBooks = this.driveBookService.findListByParams("type",9,"manType",0);
+        for(DriveBook driveBook : driveBooks){
+            BookExpand bookExpand = bookExpandService.findUniqueByParams("bookId",driveBook.getBookId());
+            if(bookExpand != null){
+                driveBook.setScore(bookExpand.getClickNum().intValue());
+                this.driveBookService.update(driveBook);
+            }
+        }
+        //清除缓存
+        String key =String.format(RedisKeyConstants.CACHE_DRIVE_BOOK_KEY, 9, 1);
+        masterRedisTemplate.delete(key);
+
         logger.info("结束更新榜单");
     }
 

@@ -16,9 +16,9 @@ import cn.jpush.api.push.model.notification.WinphoneNotification;
 
 public class JpushClientUtil {
  
-    private final static String appKey = ConfigPropertieUtils.getString("jpush_appKey");
+    private final static String appKey = "7592ae648c4d9e46baf6b4aa";//ConfigPropertieUtils.getString("jpush_appKey");
 
-    private final static String masterSecret = ConfigPropertieUtils.getString("jpush_masterSecret");
+    private final static String masterSecret = "ee0390fa593ba3ac09a59f27";//ConfigPropertieUtils.getString("jpush_masterSecret");
  
     private static JPushClient jPushClient = new JPushClient(masterSecret,appKey);
  
@@ -326,6 +326,6 @@ public class JpushClientUtil {
 //        if(JpushClientUtil.sendToAllIos("testIos","testIos","this is a ios Dev test","")==1){
 //            System.out.println("success");
 //        }
-        JpushClientUtil.sendToRegistrationId("190e35f7e0404a5505f","中奖啦","500w","500w","aa");
+        JpushClientUtil.sendToRegistrationId("190e35f7e0404a5505f","中奖啦","500w","500w","{'type':4,'title':'精选','url':'http://read.chunnuan999.com/portal/portalIndex.go','NeedLogin':1}");
     }
 }

@@ -42,5 +42,9 @@ public class RedisKeyConstants {
     //父id获取子分类key
     public final static String CACHE_CATEGORY_LIST_PID_KEY = "category_list_pid_";
 
+    //新用户福利类型key
+    public final static String CACHE_NEW_USER_WELFARE_TYPE_KEY = "new_user_welfare_type";
 
+    //点击量最高图书key
+    public final static String CACHE_MAX_CLICK_BOOK_KEY = "max_click_book";
 }

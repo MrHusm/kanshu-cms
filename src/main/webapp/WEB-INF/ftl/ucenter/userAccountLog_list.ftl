@@ -85,7 +85,11 @@
                                         <tr>
                                             <td>${userAccountLog.userId?c}</td>
                                             <td>${userAccountLog.orderNo}</td>
-                                            <td>${userAccountLog.channel?c}</td>
+                                            <td>
+                                                <#if userAccountLog.channel??>
+                                                    ${userAccountLog.channel?c}
+                                                </#if>
+                                            </td>
                                             <td>${userAccountLog.comment}</td>
                                             <td>
                                                 <#if userAccountLog.type == 1>

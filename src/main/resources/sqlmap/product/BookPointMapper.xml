@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="BookPointMapper" >
+  <resultMap id="BaseResultMap" type="com.yxsd.kanshu.product.model.BookPoint" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="book_id" property="bookId" jdbcType="BIGINT" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="withBookInfoMap" type="com.yxsd.kanshu.product.model.BookPoint"  extends="BaseResultMap" >
+    <collection property="book" ofType="com.yxsd.kanshu.product.model.Book">
+      <id column="book_id" property="bookId" jdbcType="BIGINT" />
+      <result column="title" property="title" jdbcType="VARCHAR" />
+      <result column="cover_url" property="coverUrl" jdbcType="VARCHAR" />
+      <result column="author_id" property="authorId" jdbcType="BIGINT" />
+      <result column="author_name" property="authorName" jdbcType="VARCHAR" />
+      <result column="author_penname" property="authorPenname" jdbcType="VARCHAR" />
+      <result column="intro" property="intro" jdbcType="VARCHAR" />
+      <result column="category_sec_id" property="categorySecId" jdbcType="BIGINT" />
+      <result column="category_sec_name" property="categorySecName" jdbcType="VARCHAR" />
+      <result column="category_thr_id" property="categoryThrId" jdbcType="BIGINT" />
+      <result column="category_thr_name" property="categoryThrName" jdbcType="VARCHAR" />
+      <result column="last_chapter_update_date" property="lastChapterUpdateDate" jdbcType="TIMESTAMP" />
+      <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+      <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </collection>
+  </resultMap>
+
+  <sql id="Base_Where">
+    <if test="bookId != null"> and p.book_id= #{bookId}</if>
+  </sql>
+
+  <sql id="Base_Column_List" >
+    id, book_id, num, create_date, update_date
+  </sql>
+
+  <sql id="Column_With_Book_List">
+    p.id, p.book_id,p.num,p.create_date,p.update_date,
+    b.title,b.word_count,b.cover_url,b.author_id,b.author_name,b.author_penname,b.intro,
+    b.category_sec_id,b.category_sec_name,b.category_thr_id,b.category_thr_name,b.last_chapter_update_date,
+    b.create_date, b.update_date
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from book_point
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from book_point
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yxsd.kanshu.product.model.BookPoint" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into book_point (book_id, num, create_date, 
+      update_date)
+    values (#{bookId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yxsd.kanshu.product.model.BookPoint" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into book_point
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookId != null" >
+        book_id,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookId != null" >
+        #{bookId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yxsd.kanshu.product.model.BookPoint" >
+    update book_point
+    <set >
+      <if test="bookId != null" >
+        book_id = #{bookId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yxsd.kanshu.product.model.BookPoint" >
+    update book_point
+    set book_id = #{bookId,jdbcType=BIGINT},
+      num = #{num,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getAll" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from book_point p where 1=1
+    <include refid="Base_Where" />
+    order by id
+  </select>
+
+  <select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+    select count(1)  from book_point p
+    LEFT JOIN book b
+    ON p.book_id = b.book_id where 1=1
+    <include refid="Base_Where" />
+  </select>
+  <select id="pageData" resultMap="withBookInfoMap" parameterType="map">
+    select
+    <include refid="Column_With_Book_List" />
+    from  book_point p
+    LEFT JOIN book b
+    ON p.book_id = b.book_id where 1=1
+    <include refid="Base_Where" />
+    order by p.create_date asc
+  </select>
+</mapper>

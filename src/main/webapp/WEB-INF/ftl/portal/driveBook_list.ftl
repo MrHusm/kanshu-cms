@@ -24,20 +24,20 @@
             $('#activity_type_list_form').submit();
         }
 
-        function deleteDriveBookCycle(id) {
+        function deletedriveBook(id) {
             if(confirm("确定要删除吗？")){
-                var url = "/driveBookCycle/delete.go?id=" + id;
+                var url = "/driveBook/delete.go?id=" + id;
                 window.location.href = url;
             }
         }
 
         function toUpdate(id) {
-            var url = "/driveBookCycle/toUpdate.go?id=" + id;
+            var url = "/driveBook/toUpdate.go?id=" + id;
             window.location.href = url;
         }
 
         function toAdd() {
-            var url = "/driveBookCycle/toAdd.go";
+            var url = "/driveBook/toAdd.go";
             window.location.href = url;
         }
 
@@ -53,7 +53,7 @@
         }
         function updateIdx(id){
             var idx="#idx_"+id;
-            var url = '/driveBookCycle/updateScore.go?id='+id+'&score='+$(idx).val();
+            var url = '/driveBook/updateScore.go?id='+id+'&score='+$(idx).val();
             window.location.href=url;
         }
 
@@ -76,7 +76,7 @@
                     }
                 });
                 if(deleteFlag){
-                    window.location.href="/driveBookCycle/batchDelete.go?ids="+ids;
+                    window.location.href="/driveBook/batchDelete.go?ids="+ids;
                 }else{
                     alert("请勾选需要删除的图书");
                 }
@@ -92,7 +92,7 @@
     <div class="tpl-content-wrapper">
         <div class="tpl-portlet-components">
             <div class="tpl-block">
-                <form action="/driveBookCycle/list.go" method="post" id="activity_type_list_form" >
+                <form action="/driveBook/list.go" method="post" id="activity_type_list_form" >
                     <input type="hidden" name="page" id="currentPage" value="1">
                     <table class="am-table  table-main">
                         <tr>
@@ -105,14 +105,14 @@
                                     </#list>
                                 </select>
                             </td>
-                            <td style="width:15%; text-align:right">书名</td>
-                            <td style="width:35%; text-align:left"><input type="text" id="bookName" name="bookName" value="<#if condition.bookName??>${condition.bookName}</#if>"></td>
+                            <td style="width:15%; text-align:right">图书ID</td>
+                            <td style="width:35%; text-align:left"><input type="text" id="bookId" name="bookId" value="<#if condition.bookId??>${condition.bookId?c}</#if>"></td>
                         </tr>
                         <tr>
                             <td style="width:100%; text-align:center" colspan="4">
-                                <input type="button" onclick="delsureBatch()" value="批量删除">&nbsp;&nbsp;&nbsp;
+                                <input type="button" onclick="search()" value="查询">&nbsp;&nbsp;&nbsp;
                                 <input type="button" onclick="toAdd()" value="添加">&nbsp;&nbsp;&nbsp;
-                                <input type="button" onclick="search()" value="查询">
+                                <input type="button" onclick="delsureBatch()" value="批量删除">
                             </td>
                         </tr>
                     </table>
@@ -126,58 +126,44 @@
                                 <tr>
                                     <th style="width: 5%"><input type="checkbox" class="tpl-table-fz-check" onclick="checkAll(this)"></th>
                                     <th style="width: 10%">图书ID</th>
-                                    <th style="width: 25%">书名</th>
-                                    <th style="width: 10%">类型</th>
-                                    <th style="width: 10%">开始时间</th>
-                                    <th style="width: 10%">结束时间</th>
+                                    <th style="width: 20%">书名</th>
+                                    <th style="width: 15%">类型</th>
+                                    <th style="width: 10%">配置类型</th>
                                     <th style="width: 10%">排序</th>
                                     <th style="width: 10%">免费章节数</th>
-                                    <th style="width: 16%">操作</th>
+                                    <th style="width: 15%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <#if pageFinder?? && pageFinder.data??>
-                                    <#list pageFinder.data as driveBookCycle>
+                                    <#list pageFinder.data as driveBook>
                                         <tr>
-                                            <td><input type="checkbox" name="check" id="check" value="${driveBookCycle.id?c}"></td>
-                                            <td>${driveBookCycle.bookId?c}</td>
-                                            <td>${driveBookCycle.bookName}</td>
+                                            <td><input type="checkbox" name="check" id="check" value="${driveBook.id?c}"></td>
+                                            <td>${driveBook.bookId?c}</td>
+                                            <td>${driveBook.book.title}</td>
                                             <td>
-                                                <#if driveBookCycle.type == 1>
-                                                    首页驱动
-                                                <#elseif driveBookCycle.type == 2>
-                                                    男生最爱
-                                                <#elseif driveBookCycle.type == 3>
-                                                    女生频道
-                                                <#elseif driveBookCycle.type == 4>
-                                                    二次元
-                                                <#elseif driveBookCycle.type == 5>
-                                                    大家都在搜索
-                                                <#elseif driveBookCycle.type == 6>
-                                                    全站畅销
-                                                <#elseif driveBookCycle.type == 7>
-                                                    完结精选
-                                                <#elseif driveBookCycle.type == 8>
-                                                    重磅新书
-                                                <#elseif driveBookCycle.type == 9>
-                                                    全本免费
-                                                <#elseif driveBookCycle.type == 11>
-                                                    限章免费
+                                                <#list driveTypes as driveType>
+                                                    <#if driveBook.type = driveType.type>${driveType.name}</#if>
+                                                </#list>
+                                            </td>
+                                            <td>
+                                                <#if driveBook.manType == 1>
+                                                    手动配置
+                                                <#elseif driveBook.manType == 0>
+                                                    网站抓取
                                                 </#if>
                                             </td>
-                                            <td><#if driveBookCycle.startDate??>${driveBookCycle.startDate?string("yyyy-MM-dd")}</#if></td>
-                                            <td><#if driveBookCycle.endDate??>${driveBookCycle.endDate?string("yyyy-MM-dd")}</#if></td>
                                             <td>
-                                                <span onclick="toUpdateIdx('${driveBookCycle.id?c}')" id="txt_${driveBookCycle.id?c }">${driveBookCycle.score }</span>
-                                                <input type="text" id="idx_${driveBookCycle.id?c }" name="score" value="${driveBookCycle.score }" style="display:none;width:30%"/>
-                                                <input type="button" id="btn_${driveBookCycle.id?c }" name="bt" style="display:none" value="修改" onclick="updateIdx('${driveBookCycle.id?c}')">
+                                                <span onclick="toUpdateIdx('${driveBook.id?c}')" id="txt_${driveBook.id?c }">${driveBook.score }</span>
+                                                <input type="text" id="idx_${driveBook.id?c }" name="score" value="${driveBook.score }" style="display:none;width:50%"/>
+                                                <input type="button" id="btn_${driveBook.id?c }" name="bt" style="display:none" value="修改" onclick="updateIdx('${driveBook.id?c}')">
                                             </td>
-                                            <td><#if driveBookCycle.num??>${driveBookCycle.num}</#if></td>
+                                            <td><#if driveBook.num??>${driveBook.num?c}</#if></td>
                                             <td>
                                                 <div class="am-btn-toolbar">
                                                     <div class="am-btn-group am-btn-group-xs">
-                                                        <#--<span class="am-icon-pencil-square-o" onclick="toUpdate(${driveBookCycle.id?c})">编辑</span>-->
-                                                        <span class="am-icon-trash-o" onclick="deleteDriveBookCycle(${driveBookCycle.id?c})">删除</span>
+                                                        <#--<span class="am-icon-pencil-square-o" onclick="toUpdate(${driveBook.id?c})">编辑</span>-->
+                                                        <span class="am-icon-trash-o" onclick="deletedriveBook(${driveBook.id?c})">删除</span>
                                                     </div>
                                                 </div>
                                             </td>

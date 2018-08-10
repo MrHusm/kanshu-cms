@@ -66,16 +66,9 @@
                             <td style="width:75%; text-align:left">
                                 <select name="type" id="type" style="width: 50%">
                                     <option value="">请选择</option>
-                                    <option value="1" <#if driveBookCycle.type?? && driveBookCycle.type = 1>selected</#if>>首页驱动</option>
-                                    <option value="2" <#if driveBookCycle.type?? && driveBookCycle.type = 2>selected</#if>>男生最爱</option>
-                                    <option value="3" <#if driveBookCycle.type?? && driveBookCycle.type = 3>selected</#if>>女生频道</option>
-                                    <option value="4" <#if driveBookCycle.type?? && driveBookCycle.type = 4>selected</#if>>二次元</option>
-                                    <option value="5" <#if driveBookCycle.type?? && driveBookCycle.type = 5>selected</#if>>大家都在搜索</option>
-                                    <option value="6" <#if driveBookCycle.type?? && driveBookCycle.type = 6>selected</#if>>全站畅销</option>
-                                    <option value="7" <#if driveBookCycle.type?? && driveBookCycle.type = 7>selected</#if>>完结精选</option>
-                                    <option value="8" <#if driveBookCycle.type?? && driveBookCycle.type = 8>selected</#if>>重磅新书</option>
-                                    <option value="9" <#if driveBookCycle.type?? && driveBookCycle.type = 9>selected</#if>>全本免费</option>
-                                    <option value="11" <#if driveBookCycle.type?? && driveBookCycle.type = 11>selected</#if>>限章免费</option>
+                                    <#list driveTypes as driveType>
+                                        <option value="${driveType.type}" <#if driveBookCycle.type?? && driveBookCycle.type = driveType.type>selected</#if>>${driveType.name}</option>
+                                    </#list>
                                 </select>
                             </td>
                         </tr>

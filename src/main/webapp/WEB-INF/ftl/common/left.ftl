@@ -43,9 +43,24 @@
                             <span>渠道</span>
                             <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
                         </a>
+                        <a href="/driveType/list.go">
+                            <i class="am-icon-angle-right"></i>
+                            <span>榜单类型管理</span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </a>
                         <a href="/driveBookCycle/list.go">
                             <i class="am-icon-angle-right"></i>
-                            <span>榜单管理</span>
+                            <span>榜单定时管理</span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </a>
+                        <a href="/driveBook/list.go">
+                            <i class="am-icon-angle-right"></i>
+                            <span>榜单图书管理</span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </a>
+                        <a href="/bookPoint/list.go">
+                            <i class="am-icon-angle-right"></i>
+                            <span>图书计费点管理</span>
                             <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
                         </a>
                     </#if>

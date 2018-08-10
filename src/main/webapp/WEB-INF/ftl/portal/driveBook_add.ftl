@@ -25,14 +25,6 @@
                 PostbirdAlertBox.alert({'content': '请选择榜单类型'});
                 return;
             }
-            if(checkNull("startDateStr")){
-                PostbirdAlertBox.alert({'content': '请输入轮播时间'});
-                return;
-            }
-            if(checkNull("endDateStr")){
-                PostbirdAlertBox.alert({'content': '请输入轮播时间'});
-                return;
-            }
             $('#activity_type_list_form').submit();
         }
 
@@ -61,7 +53,7 @@
     <div class="tpl-content-wrapper">
         <div class="tpl-portlet-components">
             <div class="tpl-block">
-                <form action="/driveBookCycle/add.go" method="post" id="activity_type_list_form" >
+                <form action="/driveBook/add.go" method="post" id="activity_type_list_form" >
                     <table class="am-table  table-main">
                         <tr>
                             <td style="width:25%; text-align:right">图书ID</td>
@@ -84,14 +76,6 @@
                             <td style="width:25%; text-align:right">图书限免章节数</td>
                             <td style="width:75%; text-align:left">
                                 <input type="text" name="num">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:25%;text-align:right">轮播时间</td>
-                            <td style="width:75%;text-align:left">
-                                <input type="text" style="width: 150px;" name="startDateStr" value="" class="Wdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDateStr\')}'})" id="startDateStr" >
-                                到
-                                <input type="text" style="width: 150px;" name="endDateStr" class="Wdate" value="" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDateStr\')}'})" id="endDateStr">
                             </td>
                         </tr>
                         <tr>

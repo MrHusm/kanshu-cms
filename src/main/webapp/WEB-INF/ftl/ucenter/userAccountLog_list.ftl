@@ -96,6 +96,8 @@
                                                     支付宝充值
                                                 <#elseif userAccountLog.type == 2>
                                                     微信充值
+                                                <#elseif userAccountLog.type == 3>
+                                                    华为钱包充值
                                                 </#if>
                                             </td>
                                             <td>${userAccountLog.createDate?string("yyyy-MM-dd HH:mm:ss")}</td>

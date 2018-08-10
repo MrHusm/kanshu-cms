@@ -3,9 +3,10 @@ package com.yxsd.kanshu.portal.controller;
 import com.yxsd.kanshu.base.controller.BaseController;
 import com.yxsd.kanshu.base.utils.PageFinder;
 import com.yxsd.kanshu.base.utils.Query;
+import com.yxsd.kanshu.portal.model.DriveBook;
 import com.yxsd.kanshu.portal.model.DriveBookCycle;
 import com.yxsd.kanshu.portal.model.DriveType;
-import com.yxsd.kanshu.portal.service.IDriveBookCycleService;
+import com.yxsd.kanshu.portal.service.IDriveBookService;
 import com.yxsd.kanshu.portal.service.IDriveTypeService;
 import com.yxsd.kanshu.product.model.Book;
 import com.yxsd.kanshu.product.service.IBookService;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -29,16 +29,16 @@ import java.util.List;
  */
 @Controller
 @Scope("prototype")
-@RequestMapping("driveBookCycle")
-public class DriveBookCycleController extends BaseController {
+@RequestMapping("driveBook")
+public class DriveBookController extends BaseController {
 
-    private static final Logger logger = LoggerFactory.getLogger(DriveBookCycleController.class);
-
-    @Resource(name="driveBookCycleService")
-    IDriveBookCycleService driveBookCycleService;
+    private static final Logger logger = LoggerFactory.getLogger(DriveBookController.class);
 
     @Resource(name="driveTypeService")
     IDriveTypeService driveTypeService;
+
+    @Resource(name="driveBookService")
+    IDriveBookService driveBookService;
 
     @Resource(name="bookService")
     IBookService bookService;
@@ -54,38 +54,21 @@ public class DriveBookCycleController extends BaseController {
         }
         query.setPageSize(50);
 
-        PageFinder<DriveBookCycle> pageFinder = driveBookCycleService.findPageFinderObjs(condition,query);
+        PageFinder<DriveBook> pageFinder = driveBookService.findPageFinderObjs(condition,query);
         if(pageFinder!=null){
             model.addAttribute("pageFinder",pageFinder);
         }
         model.addAttribute("condition",condition);
         List<DriveType> driveTypes = this.driveTypeService.findListByParamsObjs(null);
         model.addAttribute("driveTypes",driveTypes);
-        return "/portal/driveBookCycle_list";
-    }
-
-    @RequestMapping("toUpdate")
-    public String toUpdate(HttpServletResponse response,HttpServletRequest request,Model model){
-        String id = request.getParameter("id");
-        DriveBookCycle driveBookCycle = this.driveBookCycleService.findMasterById(Long.parseLong(id));
-        model.addAttribute("driveBookCycle",driveBookCycle);
-        List<DriveType> driveTypes = this.driveTypeService.findListByParamsObjs(null);
-        model.addAttribute("driveTypes",driveTypes);
-        return "/portal/driveBookCycle_update";
-    }
-
-    @RequestMapping("update")
-    public String update(HttpServletResponse response,HttpServletRequest request,Model model,DriveBookCycle driveBookCycle){
-        driveBookCycle.setUpdateDate(new Date());
-        this.driveBookCycleService.update(driveBookCycle);
-        return "redirect:/driveBookCycle/list.go";
+        return "/portal/driveBook_list";
     }
 
     @RequestMapping("delete")
     public String delete(HttpServletResponse response,HttpServletRequest request,Model model){
         String id = request.getParameter("id");
-        this.driveBookCycleService.deleteById(Long.parseLong(id));
-        return "redirect:/driveBookCycle/list.go";
+        this.driveBookService.deleteById(Long.parseLong(id));
+        return "redirect:/driveBook/list.go";
     }
 
     @RequestMapping("batchDelete")
@@ -93,56 +76,67 @@ public class DriveBookCycleController extends BaseController {
         String ids = request.getParameter("ids");
         for(String id : ids.split(",")){
             if(StringUtils.isNotBlank(id)){
-                this.driveBookCycleService.deleteById(Long.parseLong(id));
+                this.driveBookService.deleteById(Long.parseLong(id));
             }
         }
-        return "redirect:/driveBookCycle/list.go";
+        return "redirect:/driveBook/list.go";
     }
 
     @RequestMapping("toAdd")
     public String toAdd(HttpServletResponse response,HttpServletRequest request,Model model){
         List<DriveType> driveTypes = this.driveTypeService.findListByParamsObjs(null);
         model.addAttribute("driveTypes",driveTypes);
-        return "/portal/driveBookCycle_add";
+        return "/portal/driveBook_add";
     }
 
     @RequestMapping("add")
-    public String add(HttpServletResponse response,HttpServletRequest request,Model model,DriveBookCycle driveBookCycle){
+    public String add(HttpServletResponse response,HttpServletRequest request,Model model){
         try{
             String bookIds = request.getParameter("bookIds");
-            String startDate = request.getParameter("startDateStr");
-            String endDate = request.getParameter("endDateStr");
-            SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+            String type = request.getParameter("type");
+            String num = request.getParameter("num");
             for(int i = 0; i < bookIds.split(",").length; i++){
                 String bookId = bookIds.split(",")[i];
                 Book book = this.bookService.get(Long.parseLong(bookId));
                 if(book == null){
                     continue;
                 }
-                DriveBookCycle bookCycle = new DriveBookCycle();
-                bookCycle.setBookId(Long.parseLong(bookId));
-                bookCycle.setBookName(book.getTitle());
-                bookCycle.setScore(bookIds.split(",").length - i);
-                bookCycle.setStartDate(sdf.parse(startDate));
-                bookCycle.setEndDate(sdf.parse(endDate));
-                bookCycle.setType(driveBookCycle.getType());
-                if(driveBookCycle.getType() == 11){
-                    bookCycle.setNum(driveBookCycle.getNum());
+                DriveBook driveBook = this.driveBookService.findUniqueByParams("bookId",bookId,"type",type,"status",1);
+                if(driveBook == null){
+                    driveBook = new DriveBook();
+                    driveBook.setManType(1);
+                    driveBook.setStatus(1);
+                    driveBook.setScore(bookIds.split(",").length - i);
+                    driveBook.setType(Integer.parseInt(type));
+                    driveBook.setBookId(Long.parseLong(bookId));
+                    if(StringUtils.isNotBlank(num)){
+                        driveBook.setNum(Integer.parseInt(num));
+                    }
+                    driveBook.setCreateDate(new Date());
+                    driveBook.setUpdateDate(new Date());
+                    this.driveBookService.save(driveBook);
+                }else{
+                    driveBook.setManType(1);
+                    driveBook.setScore(bookIds.split(",").length - i);
+                    driveBook.setStatus(1);
+                    if(StringUtils.isNotBlank(num)){
+                        driveBook.setNum(Integer.parseInt(num));
+                    }
+                    driveBook.setUpdateDate(new Date());
+                    this.driveBookService.update(driveBook);
                 }
-                bookCycle.setCreateDate(new Date());
-                bookCycle.setUpdateDate(new Date());
-                this.driveBookCycleService.save(bookCycle);
             }
         }catch(Exception e){
             e.printStackTrace();
         }
-        return "redirect:/driveBookCycle/list.go";
+        return "redirect:/driveBook/list.go";
     }
 
     @RequestMapping("updateScore")
-    public String updateScore(HttpServletResponse response,HttpServletRequest request,Model model,DriveBookCycle driveBookCycle){
-        driveBookCycle.setUpdateDate(new Date());
-        this.driveBookCycleService.update(driveBookCycle);
-        return "redirect:/driveBookCycle/list.go";
+    public String updateScore(HttpServletResponse response,HttpServletRequest request,Model model,DriveBook driveBook){
+        driveBook.setUpdateDate(new Date());
+        this.driveBookService.update(driveBook);
+        return "redirect:/driveBook/list.go";
     }
+
 }

@@ -5,7 +5,6 @@ import com.yxsd.kanshu.base.controller.BaseController;
 import com.yxsd.kanshu.base.utils.AppUtil;
 import com.yxsd.kanshu.base.utils.PageFinder;
 import com.yxsd.kanshu.base.utils.Query;
-import com.yxsd.kanshu.product.model.ChannelData;
 import com.yxsd.kanshu.ucenter.model.UserAccountLog;
 import com.yxsd.kanshu.ucenter.model.UserCms;
 import com.yxsd.kanshu.ucenter.service.IUserAccountLogService;
@@ -21,7 +20,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,7 +43,7 @@ public class UserController extends BaseController {
         }else{
             query.setPage(1);
         }
-        query.setPageSize(10);
+        query.setPageSize(50);
         UserCms user = (UserCms) AppUtil.getSession().getAttribute(Constants.CMS_USER_INFO_STORED_IN_SESSION);
         Map<String,Object> condition = new HashMap<String, Object>();
 
@@ -67,7 +65,7 @@ public class UserController extends BaseController {
         if(user.getAdminFlag() != 1){
             condition.put("channels",user.getChannels());
         }
-        condition.put("types","1,2");
+        condition.put("types","1,2,3");
 
         PageFinder<UserAccountLog> pageFinder = userAccountLogService.findPageFinderObjs(condition,query);
         if(pageFinder!=null){

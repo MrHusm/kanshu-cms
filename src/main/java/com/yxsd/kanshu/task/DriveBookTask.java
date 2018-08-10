@@ -4,8 +4,10 @@ import com.yxsd.kanshu.base.contants.RedisKeyConstants;
 import com.yxsd.kanshu.base.controller.BaseController;
 import com.yxsd.kanshu.portal.model.DriveBook;
 import com.yxsd.kanshu.portal.model.DriveBookCycle;
+import com.yxsd.kanshu.portal.model.DriveType;
 import com.yxsd.kanshu.portal.service.IDriveBookCycleService;
 import com.yxsd.kanshu.portal.service.IDriveBookService;
+import com.yxsd.kanshu.portal.service.IDriveTypeService;
 import com.yxsd.kanshu.product.model.BookExpand;
 import com.yxsd.kanshu.product.service.IBookExpandService;
 import org.apache.commons.collections.CollectionUtils;
@@ -42,6 +44,9 @@ public class DriveBookTask extends BaseController {
     @Resource(name="driveBookCycleService")
     IDriveBookCycleService driveBookCycleService;
 
+    @Resource(name="driveTypeService")
+    IDriveTypeService driveTypeService;
+
     @Resource(name="bookExpandService")
     IBookExpandService bookExpandService;
 
@@ -53,7 +58,9 @@ public class DriveBookTask extends BaseController {
         Map<String,Object> condition = new HashMap<String,Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date day = new Date();
-        for(int i = 1; i < 12; i++){
+        List<DriveType> driveTypes = this.driveTypeService.findListByParamsObjs(null);
+        for(DriveType driveType : driveTypes){
+            int i = driveType.getType();
             condition.clear();
             condition.put("type",i);
             condition.put("day",sdf.format(day));
@@ -101,6 +108,7 @@ public class DriveBookTask extends BaseController {
             BookExpand bookExpand = bookExpandService.findUniqueByParams("bookId",driveBook.getBookId());
             if(bookExpand != null){
                 driveBook.setScore(bookExpand.getClickNum().intValue());
+                driveBook.setUpdateDate(new Date());
                 this.driveBookService.update(driveBook);
             }
         }

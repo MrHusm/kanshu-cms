@@ -63,6 +63,11 @@
                             <span>图书计费点管理</span>
                             <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
                         </a>
+                        <a href="/searchWordRank/list.go">
+                            <i class="am-icon-angle-right"></i>
+                            <span>搜索词管理</span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </a>
                     </#if>
                     </li>
                 </ul>

@@ -11,6 +11,7 @@ import com.yxsd.kanshu.product.service.IChannelService;
 import com.yxsd.kanshu.ucenter.service.IUserAccessLogService;
 import com.yxsd.kanshu.ucenter.service.IUserAccountLogService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -106,12 +107,19 @@ public class ChannelDataTask extends BaseController {
                 if(channelDataBefore != null){
                     String retentionsUrl = "http://api.umeng.com/retentions?appkey=%s&auth_token=%s&period_type=daily&start_date=%s&end_date=%s&channels=%s";
                     String retentionsJson = HttpUtils.getContent(String.format(retentionsUrl,appKey,AUTH_TOKEN,dayBefore,dayBefore,map.get("id").toString()),"UTF-8");
+                    int i = 0;
+                    while(StringUtils.isBlank(retentionsJson) && i < 3){
+                        retentionsJson = HttpUtils.getContent(String.format(retentionsUrl,appKey,AUTH_TOKEN,dayBefore,dayBefore,map.get("id").toString()),"UTF-8");
+                        i++;
+                    }
                     logger.info("retentionsJson:" + retentionsJson);
-                    List<Map> retentions =  JSON.parseArray(retentionsJson,Map.class);
-                    for(Map retention : retentions){
-                        JSONArray retentionRate = (JSONArray)retention.get("retention_rate");
-                        channelDataBefore.setOneDayRetention(retentionRate.get(0).toString() + "%");
-                        channelDataService.update(channelDataBefore);
+                    if(StringUtils.isNotBlank(retentionsJson)){
+                        List<Map> retentions =  JSON.parseArray(retentionsJson,Map.class);
+                        for(Map retention : retentions){
+                            JSONArray retentionRate = (JSONArray)retention.get("retention_rate");
+                            channelDataBefore.setOneDayRetention(retentionRate.get(0).toString() + "%");
+                            channelDataService.update(channelDataBefore);
+                        }
                     }
                 }
             }

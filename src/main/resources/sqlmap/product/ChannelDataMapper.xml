@@ -17,6 +17,9 @@
     <result column="money_fixed" property="moneyFixed" jdbcType="INTEGER" />
     <result column="money_show" property="moneyShow" jdbcType="INTEGER" />
     <result column="one_day_retention" property="oneDayRetention" jdbcType="VARCHAR" />
+    <result column="pv" property="pv" jdbcType="INTEGER" />
+    <result column="uv" property="uv" jdbcType="INTEGER" />
+    <result column="pay_order_num" property="payOrderNum" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
@@ -34,7 +37,7 @@
 
   <sql id="Base_Column_List" >
     id, channel, `day`, dnu, dnu_fixed,dnu_show, dau, dau_fixed, dau_show, charge_num,money, money_fixed,
-    money_show, one_day_retention, status, create_date, update_date
+    money_show, one_day_retention,pv,uv,pay_order_num, status, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select cd.*,
@@ -53,14 +56,14 @@
     insert into channel_data (channel, `day`, dnu,
       dnu_fixed, dnu_show, dau,
       dau_fixed, dau_show,charge_num, money,
-      money_fixed,money_show, one_day_retention,
+      money_fixed,money_show, one_day_retention,pv,uv,pay_order_num,
       status, create_date, update_date
       )
     values (#{channel,jdbcType=INTEGER}, #{day,jdbcType=VARCHAR}, #{dnu,jdbcType=INTEGER},
       #{dnuFixed,jdbcType=INTEGER},#{dnuShow,jdbcType=INTEGER}, #{dau,jdbcType=INTEGER},
       #{dauFixed,jdbcType=INTEGER},#{dauShow,jdbcType=INTEGER}, #{chargeNum,jdbcType=INTEGER},#{money,jdbcType=INTEGER},
       #{moneyFixed,jdbcType=INTEGER},#{moneyShow,jdbcType=INTEGER}, #{oneDayRetention,jdbcType=VARCHAR},
-      #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      #{pv,jdbcType=INTEGER},#{uv,jdbcType=INTEGER},#{payOrderNum,jdbcType=INTEGER},#{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.yxsd.kanshu.product.model.ChannelData" >
@@ -107,6 +110,15 @@
       </if>
       <if test="oneDayRetention != null" >
         one_day_retention,
+      </if>
+      <if test="pv != null" >
+        pv,
+      </if>
+      <if test="uv != null" >
+        uv,
+      </if>
+      <if test="payOrderNum != null" >
+        pay_order_num,
       </if>
       <if test="status != null" >
         status,
@@ -157,6 +169,15 @@
       </if>
       <if test="oneDayRetention != null" >
         #{oneDayRetention,jdbcType=VARCHAR},
+      </if>
+      <if test="pv != null" >
+        #{pv,jdbcType=INTEGER},
+      </if>
+      <if test="uv != null" >
+        #{uv,jdbcType=INTEGER},
+      </if>
+      <if test="payOrderNum != null" >
+        #{payOrderNum,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
@@ -211,6 +232,15 @@
       <if test="oneDayRetention != null" >
         one_day_retention = #{oneDayRetention,jdbcType=VARCHAR},
       </if>
+      <if test="pv != null" >
+        pv = #{pv,jdbcType=INTEGER},
+      </if>
+      <if test="uv != null" >
+        uv = #{uv,jdbcType=INTEGER},
+      </if>
+      <if test="payOrderNum != null" >
+        pay_order_num = #{payOrderNum,jdbcType=INTEGER},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -238,6 +268,9 @@
       money_fixed = #{moneyFixed,jdbcType=INTEGER},
       money_show = #{moneyShow,jdbcType=INTEGER},
       one_day_retention = #{oneDayRetention,jdbcType=VARCHAR},
+      pv = #{pv,jdbcType=INTEGER},
+      uv = #{uv,jdbcType=INTEGER},
+      pay_order_num = #{payOrderNum,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_date = #{updateDate,jdbcType=TIMESTAMP}

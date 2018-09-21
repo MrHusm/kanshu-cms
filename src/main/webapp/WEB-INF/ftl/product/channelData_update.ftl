@@ -33,7 +33,7 @@
                     <input type="hidden" name="channel" value="${channelData.channel?c}">
                     <input type="hidden" name="dau" value="${channelData.dau?c}">
                     <input type="hidden" name="money" value="${channelData.money?c}">
-                    <input type="hidden" name="chargeNum" value="<#if channelData.chargeNum??>${channelData.chargeNum?c}</#if>">
+                    <#--<input type="hidden" name="chargeNum" value="<#if channelData.chargeNum??>${channelData.chargeNum?c}</#if>">-->
                     <input type="hidden" name="status" id="status" value="0">
                     <table class="am-table  table-main">
                         <tr>
@@ -80,10 +80,24 @@
                             </td>
                         </tr>
                         <tr>
+                            <td style="width:10%; text-align:right">总PV</td>
+                            <td style="width:23%; text-align:left">
+                                <input type="text" style="width:80%;" id="pv" name="pv" value="<#if channelData.pv??>${channelData.pv?c}</#if>">
+                            </td>
+                            <td style="width:10%; text-align:right">总UV</td>
+                            <td style="width:23%; text-align:left">
+                                <input type="text" style="width:80%;" id="uv" name="uv" value="<#if channelData.uv??>${channelData.uv?c}</#if>">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:10%; text-align:right">充值唤起数</td>
+                            <td style="width:23%; text-align:left">
+                                <input type="text" style="width:80%;" id="payOrderNum" name="payOrderNum" value="<#if channelData.payOrderNum??>${channelData.payOrderNum?c}</#if>">
+                            </td>
                             <td style="width:10%; text-align:right">充值次数</td>
-                            <td style="width:23%; text-align:left"><#if channelData.chargeNum??>${channelData.chargeNum?c}</#if></td>
-                            <td style="width:10%; text-align:right">&nbsp;</td>
-                            <td style="width:23%; text-align:left">&nbsp;</td>
+                            <td style="width:23%; text-align:left">
+                                <input type="text" style="width:80%;" id="chargeNum" name="chargeNum" value="<#if channelData.chargeNum??>${channelData.chargeNum?c}</#if>">
+                            </td>
                         </tr>
                         <tr>
                             <td style="width:100%; text-align:center" colspan="4">

@@ -124,18 +124,21 @@
                                     <th style="width: 5%" onclick="sortData('channel')">渠道ID</th>
                                     <th style="width: 5%">渠道名称</th>
                                     <th style="width: 5%" onclick="sortData('dnu')">新增用户</th>
-                                    <th style="width: 6%">固定值</th>
+                                    <th style="width: 4%">固定值</th>
                                     <th style="width: 5%">渠道显示</th>
                                     <th style="width: 5%" onclick="sortData('dau')">日活用户</th>
-                                    <th style="width: 6%">固定值</th>
+                                    <th style="width: 4%">固定值</th>
                                     <th style="width: 5%">渠道显示</th>
-                                    <th style="width: 5%" onclick="sortData('money')">收入</th>
-                                    <th style="width: 6%">固定值</th>
+                                    <th style="width: 4%" onclick="sortData('money')">收入</th>
+                                    <th style="width: 4%">固定值</th>
                                     <th style="width: 5%">渠道显示</th>
                                     <th style="width: 5%">充值次数</th>
                                     <th style="width: 5%" onclick="sortData('one_day_retention')">次日留存</th>
-                                    <th style="width: 8%">状态</th>
-                                    <th style="width: 8%">操作</th>
+                                    <th style="width: 4%">总PV</th>
+                                    <th style="width: 4%">总UV</th>
+                                    <th style="width: 5%">充值唤起数</th>
+                                    <th style="width: 7%">状态</th>
+                                    <th style="width: 7%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -161,6 +164,9 @@
                                             <td>${channelData.moneyShow?c}</td>
                                             <td><#if channelData.chargeNum??>${channelData.chargeNum?c}</#if></td>
                                             <td><#if channelData.oneDayRetention??>${channelData.oneDayRetention}</#if></td>
+                                            <td><#if channelData.pv??>${channelData.pv?c}</#if></td>
+                                            <td><#if channelData.uv??>${channelData.uv?c}</#if></td>
+                                            <td><#if channelData.payOrderNum??>${channelData.payOrderNum?c}</#if></td>
                                             <td>
                                                 <#if channelData.status ==0>
                                                     未发布

@@ -79,6 +79,21 @@ public class ChannelData implements Serializable{
     private String oneDayRetention;
 
     /**
+     * pv
+     */
+    private Integer pv;
+
+    /**
+     * uv
+     */
+    private Integer uv;
+
+    /**
+     * 充值订单数
+     */
+    private Integer payOrderNum;
+
+    /**
      * 发布状态 0：未发布 1：已发布
      */
     private Integer status;
@@ -295,5 +310,29 @@ public class ChannelData implements Serializable{
 
     public void setChargeNum(Integer chargeNum) {
         this.chargeNum = chargeNum;
+    }
+
+    public Integer getPv() {
+        return pv;
+    }
+
+    public void setPv(Integer pv) {
+        this.pv = pv;
+    }
+
+    public Integer getUv() {
+        return uv;
+    }
+
+    public void setUv(Integer uv) {
+        this.uv = uv;
+    }
+
+    public Integer getPayOrderNum() {
+        return payOrderNum;
+    }
+
+    public void setPayOrderNum(Integer payOrderNum) {
+        this.payOrderNum = payOrderNum;
     }
 }

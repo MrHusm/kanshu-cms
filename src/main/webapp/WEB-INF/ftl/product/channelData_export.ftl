@@ -17,6 +17,11 @@
             <th style="width: 10%" >收入</th>
             <th style="width: 10%" >充值次数</th>
             <th style="width: 10%">次日留存</th>
+            <#if Session.userSessionInfo.channels?index_of("300022")!=-1>
+                <th>总PV</th>
+                <th>总UV</th>
+                <th>充值唤起数</th>
+            </#if>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +36,11 @@
                     <td>${channelData.moneyShow?c}</td>
                     <td><#if channelData.chargeNum??>${channelData.chargeNum?c}</#if></td>
                     <td><#if channelData.oneDayRetention??>${channelData.oneDayRetention}</#if></td>
+                    <#if Session.userSessionInfo.channels?index_of("300022")!=-1>
+                        <td><#if channelData.pv??>${channelData.pv?c}</#if></td>
+                        <td><#if channelData.uv??>${channelData.uv?c}</#if></td>
+                        <td><#if channelData.payOrderNum??>${channelData.payOrderNum?c}</#if></td>
+                    </#if>
                 </tr>
             </#list>
         </#if>
